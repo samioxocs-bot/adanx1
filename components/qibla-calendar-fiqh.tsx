@@ -6,57 +6,38 @@ import {
   Calendar,
   BookOpen,
   Share2,
-  Copy,
   Check,
-  Volume2,
   RefreshCw,
 } from 'lucide-react'
 import {
   FIQH_TOPICS,
-  MUEZZIN_PROFILES,
   formatTime12Ar,
   formatTime12En,
   type ComputedPrayerDay,
 } from '@/lib/prayer-engine'
-import {
-  playAdhanByMuezzinId,
-  stopAdhanAudio,
-  subscribeAdhanState,
-} from '@/lib/audio-adhan'
 
 interface QiblaCalendarFiqhProps {
   schedule: ComputedPrayerDay
-  muezzinId: string
   lang: 'ar' | 'en'
-  onSelectMuezzin: (id: string) => void
   lastSyncedAt: string
 }
 
 export function QiblaCalendarFiqh({
   schedule,
-  muezzinId,
   lang,
-  onSelectMuezzin,
   lastSyncedAt,
 }: QiblaCalendarFiqhProps) {
   const isAr = lang === 'ar'
   const [deviceHeading, setDeviceHeading] = useState<number>(0)
   const [selectedFiqhId, setSelectedFiqhId] = useState<string>(FIQH_TOPICS[0].id)
   const [copiedShare, setCopiedShare] = useState(false)
-  const [playingMuezzinId, setPlayingMuezzinId] = useState<string | null>(null)
-
-  React.useEffect(() => {
-    return subscribeAdhanState((st) => {
-      setPlayingMuezzinId(st.isPlaying ? st.muezzinId : null)
-    })
-  }, [])
 
   const relativeRotation = (schedule.qiblaAngle - deviceHeading + 360) % 360
   const isAlignedWithKaaba =
     Math.abs(relativeRotation) < 8 || Math.abs(relativeRotation - 360) < 8
 
   const shareText = isAr
-    ? `تذكير من تطبيق أذان ٢:\nالصلاة القادمة: ${schedule.nextPrayer.nameAr} عند الساعة ${schedule.nextPrayer.formatted12Ar}\n﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾`
+    ? `تذكير من تطبيق أذان المغرب والقرآن الكريم:\nالصلاة القادمة: ${schedule.nextPrayer.nameAr} عند الساعة ${schedule.nextPrayer.formatted12Ar}\n﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾`
     : `Reminder from Adan 2:\nNext Prayer: ${schedule.nextPrayer.nameEn} at ${schedule.nextPrayer.formatted12En}\n"Indeed, prayer has been decreed upon the believers a decree of specified times."`
 
   const handleShare = async () => {
@@ -78,15 +59,6 @@ export function QiblaCalendarFiqh({
     }
   }
 
-  const handlePreviewMuezzin = (id: string) => {
-    if (playingMuezzinId === id) {
-      stopAdhanAudio()
-    } else {
-      onSelectMuezzin(id)
-      playAdhanByMuezzinId(id)
-    }
-  }
-
   const upcomingIslamicEvents = [
     {
       nameAr: 'الأيام البيض (13-15 من الشهر الهجري)',
@@ -104,7 +76,7 @@ export function QiblaCalendarFiqh({
       nameAr: 'يوم عرفة ويوم عاشوراء',
       nameEn: 'Day of Arafah & Day of Ashura',
       descAr: 'تنبيهات استباقية لصيام الأيام الفاضلة ومضاعفة الأجور',
-      badgeAr: 'تقويم أم القرى',
+      badgeAr: 'تقويم الهجري',
     },
   ]
 
@@ -114,15 +86,15 @@ export function QiblaCalendarFiqh({
   return (
     <section className="space-y-4">
       {/* 1. Accurate Interactive Qibla Compass */}
-      <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Compass className="h-4 w-4 text-amber-400" />
+            <Compass className="h-4 w-4 text-amber-500" />
             <h3 className="text-sm font-bold text-foreground">
               {isAr ? 'بوصلة القبلة الدقيقة' : 'Precision Qibla Compass'}
             </h3>
           </div>
-          <span className="rounded-full bg-emerald-500/15 px-2.5 py-0.5 font-mono text-xs font-bold text-emerald-400">
+          <span className="rounded-full bg-primary/15 px-2.5 py-0.5 font-mono text-xs font-bold text-primary">
             {schedule.qiblaAngle}° • {schedule.distanceToKaabaKm} km
           </span>
         </div>
@@ -131,12 +103,14 @@ export function QiblaCalendarFiqh({
           <div
             className={`relative flex h-44 w-44 items-center justify-center rounded-full border-2 transition-all duration-300 ${
               isAlignedWithKaaba
-                ? 'border-amber-400 bg-emerald-950/60 shadow-[0_0_25px_rgba(245,158,11,0.35)]'
-                : 'border-emerald-500/30 bg-emerald-950/30'
+                ? 'border-amber-500 bg-primary/10 shadow-[0_0_25px_rgba(245,158,11,0.3)]'
+                : 'border-primary/30 bg-secondary/50'
             }`}
           >
             {/* Cardinal points */}
-            <span className="absolute top-1.5 text-[10px] font-bold text-amber-400">N</span>
+            <span className="absolute top-1.5 text-[10px] font-bold text-amber-600 dark:text-amber-400">
+              N
+            </span>
             <span className="absolute bottom-1.5 text-[10px] font-semibold text-muted-foreground">
               S
             </span>
@@ -164,10 +138,21 @@ export function QiblaCalendarFiqh({
                   stroke="#F59E0B"
                   strokeWidth="2"
                 />
-                <line x1="42" y1="11" x2="58" y2="11" stroke="#F59E0B" strokeWidth="2" />
+                <line
+                  x1="42"
+                  y1="11"
+                  x2="58"
+                  y2="11"
+                  stroke="#F59E0B"
+                  strokeWidth="2"
+                />
                 {/* Golden Needle */}
                 <polygon points="50,22 44,52 50,47 56,52" fill="#F59E0B" />
-                <polygon points="50,78 45,52 50,56 55,52" fill="#10B981" opacity="0.5" />
+                <polygon
+                  points="50,78 45,52 50,56 55,52"
+                  fill="#10B981"
+                  opacity="0.5"
+                />
                 <circle cx="50" cy="50" r="4" fill="#F59E0B" />
               </svg>
             </div>
@@ -188,7 +173,7 @@ export function QiblaCalendarFiqh({
               className="w-full accent-amber-500"
             />
             {isAlignedWithKaaba && (
-              <p className="text-xs font-bold text-amber-400">
+              <p className="text-xs font-bold text-amber-600 dark:text-amber-400">
                 {isAr
                   ? '✓ أنت الآن متجه تماماً نحو الكعبة المشرفة'
                   : '✓ Perfectly aligned with the Holy Kaaba'}
@@ -198,58 +183,12 @@ export function QiblaCalendarFiqh({
         </div>
       </div>
 
-      {/* 2. Famous Muezzin Selector & Audio Quality */}
-      <div className="rounded-2xl border border-border bg-card p-4 space-y-2.5">
-        <h3 className="text-sm font-bold text-foreground">
-          {isAr
-            ? 'أصوات المؤذنين المشهورين والمقامات الصوتية'
-            : 'Famous Muezzins & Vocal Maqamat'}
-        </h3>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {MUEZZIN_PROFILES.map((m) => {
-            const isSelected = m.id === muezzinId
-            const isPlaying = playingMuezzinId === m.id
-            return (
-              <div
-                key={m.id}
-                className={`flex items-center justify-between rounded-xl border p-2.5 transition ${
-                  isSelected
-                    ? 'border-amber-400/50 bg-emerald-950/40'
-                    : 'border-border bg-muted/20'
-                }`}
-              >
-                <div>
-                  <p className="text-xs font-bold text-foreground">
-                    {isAr ? m.nameAr : m.nameEn}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">
-                    {isAr ? `${m.mosqueAr} • ${m.maqamAr}` : m.mosqueEn}
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handlePreviewMuezzin(m.id)}
-                  className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-[11px] font-semibold transition ${
-                    isPlaying
-                      ? 'bg-amber-500 text-emerald-950'
-                      : 'bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30'
-                  }`}
-                >
-                  <Volume2 className="h-3.5 w-3.5" />
-                  <span>{isPlaying ? (isAr ? 'إيقاف' : 'Stop') : isAr ? 'استماع' : 'Listen'}</span>
-                </button>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* 3. Islamic Fiqh of Prayer Encyclopedia */}
-      <div className="rounded-2xl border border-border bg-card p-4 space-y-3">
+      {/* 2. Islamic Fiqh of Prayer Encyclopedia (Maliki & General Rulings) */}
+      <div className="rounded-2xl border border-border bg-card p-4 shadow-sm space-y-3">
         <div className="flex items-center gap-2">
-          <BookOpen className="h-4 w-4 text-emerald-400" />
+          <BookOpen className="h-4 w-4 text-primary" />
           <h3 className="text-sm font-bold text-foreground">
-            {isAr ? 'موسوعة الأحكام الفقهية للصلاة' : 'Fiqh Rulings of Prayer'}
+            {isAr ? 'موسوعة الأحكام الفقهية للصلاة (المذهب المالكي)' : 'Fiqh Rulings of Prayer'}
           </h3>
         </div>
 
@@ -261,7 +200,7 @@ export function QiblaCalendarFiqh({
               onClick={() => setSelectedFiqhId(topic.id)}
               className={`rounded-xl px-2.5 py-1 text-xs font-semibold transition ${
                 selectedFiqhId === topic.id
-                  ? 'bg-emerald-600 text-white'
+                  ? 'bg-primary text-primary-foreground'
                   : 'bg-secondary text-secondary-foreground'
               }`}
             >
@@ -270,12 +209,12 @@ export function QiblaCalendarFiqh({
           ))}
         </div>
 
-        <div className="rounded-xl border border-emerald-500/20 bg-muted/30 p-3 space-y-2 text-xs">
+        <div className="rounded-xl border border-primary/20 bg-muted/30 p-3 space-y-2 text-xs">
           <div className="flex items-center justify-between">
-            <span className="font-bold text-amber-400">
+            <span className="font-bold text-amber-600 dark:text-amber-400">
               {isAr ? activeFiqh.titleAr : activeFiqh.titleEn}
             </span>
-            <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] text-emerald-400">
+            <span className="rounded-md bg-primary/15 px-2 py-0.5 text-[10px] font-bold text-primary">
               {isAr ? activeFiqh.categoryAr : activeFiqh.categoryEn}
             </span>
           </div>
@@ -287,18 +226,22 @@ export function QiblaCalendarFiqh({
               <li key={idx}>{point}</li>
             ))}
           </ul>
-          <p className="border-t border-border/50 pt-2 font-serif text-xs text-amber-300">
+          <p className="border-t border-border/50 pt-2 font-serif text-xs font-bold text-amber-700 dark:text-amber-300">
             {activeFiqh.evidenceAr}
           </p>
         </div>
       </div>
 
-      {/* 4. Hijri & Gregorian Calendar + Social Reminder Sharing & Multi-Device Sync */}
+      {/* 3. Hijri & Gregorian Calendar + Social Reminder Sharing */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-3.5 space-y-2">
+        <div className="rounded-2xl border border-border bg-card p-3.5 shadow-sm space-y-2">
           <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
-            <Calendar className="h-4 w-4 text-amber-400" />
-            <span>{isAr ? 'التقويم الهجري والمواسم الإيمانية' : 'Hijri Calendar & Seasons'}</span>
+            <Calendar className="h-4 w-4 text-amber-500" />
+            <span>
+              {isAr
+                ? 'التقويم الهجري والمواسم الإيمانية'
+                : 'Hijri Calendar & Seasons'}
+            </span>
           </div>
           <div className="space-y-1.5">
             {upcomingIslamicEvents.map((ev, idx) => (
@@ -310,9 +253,11 @@ export function QiblaCalendarFiqh({
                   <p className="font-semibold text-foreground">
                     {isAr ? ev.nameAr : ev.nameEn}
                   </p>
-                  <p className="text-[10px] text-muted-foreground">{ev.descAr}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {ev.descAr}
+                  </p>
                 </div>
-                <span className="shrink-0 rounded bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-bold text-emerald-400">
+                <span className="shrink-0 rounded bg-primary/15 px-1.5 py-0.5 text-[9px] font-bold text-primary">
                   {ev.badgeAr}
                 </span>
               </div>
@@ -320,18 +265,20 @@ export function QiblaCalendarFiqh({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-3.5 flex flex-col justify-between space-y-3">
+        <div className="rounded-2xl border border-border bg-card p-3.5 shadow-sm flex flex-col justify-between space-y-3">
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-foreground">
-                {isAr ? 'مشاركة التذكير والمزامنة السحابية' : 'Social Reminder & Cloud Sync'}
+                {isAr
+                  ? 'مشاركة التذكير وحفظ البيانات محلياً'
+                  : 'Share Reminder & Local Sync'}
               </span>
-              <span className="inline-flex items-center gap-1 text-[10px] text-emerald-400">
+              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-primary">
                 <RefreshCw className="h-3 w-3" />
-                {isAr ? 'متزامن' : 'Synced'}
+                {isAr ? 'محفوظ دون إنترنت' : 'Saved Offline'}
               </span>
             </div>
-            <div className="rounded-xl border border-amber-400/30 bg-emerald-950/40 p-2.5 text-[11px] leading-relaxed text-emerald-100 whitespace-pre-line">
+            <div className="rounded-xl border border-primary/25 bg-primary/5 p-2.5 text-[11px] leading-relaxed text-foreground whitespace-pre-line">
               {shareText}
             </div>
           </div>
@@ -339,8 +286,8 @@ export function QiblaCalendarFiqh({
           <div className="flex items-center justify-between gap-2">
             <span className="text-[10px] text-muted-foreground">
               {isAr
-                ? `آخر مزامنة بين الأجهزة: ${formatTime12Ar(new Date(lastSyncedAt))}`
-                : `Last synced: ${formatTime12En(new Date(lastSyncedAt))}`}
+                ? `آخر تحديث: ${formatTime12Ar(new Date(lastSyncedAt))}`
+                : `Last updated: ${formatTime12En(new Date(lastSyncedAt))}`}
             </span>
             <button
               type="button"

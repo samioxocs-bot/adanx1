@@ -7,9 +7,11 @@ import {
   Sun,
   Globe,
   Clock,
-  BrainCircuit,
-  Compass,
+  BookOpen,
   Sparkles,
+  Hand,
+  CloudSun,
+  Compass,
   Settings,
 } from 'lucide-react'
 import {
@@ -32,7 +34,10 @@ import {
 import { PrayerTicker } from '@/components/prayer-ticker'
 import { HeroPrayerCard } from '@/components/hero-prayer-card'
 import { PrayerTimesList } from '@/components/prayer-times-list'
-import { AiSpiritualCoach } from '@/components/ai-spiritual-coach'
+import { QuranReader } from '@/components/quran-reader'
+import { AdhkarSection } from '@/components/adhkar-section'
+import { ElectronicTasbih } from '@/components/electronic-tasbih'
+import { WeatherSection } from '@/components/weather-section'
 import { QiblaCalendarFiqh } from '@/components/qibla-calendar-fiqh'
 import { SettingsPanel } from '@/components/settings-panel'
 
@@ -41,14 +46,21 @@ type ApiUserResponse = UserDatabaseState & {
   progressDays: SpiritualProgressDay[]
 }
 
+export type AppSectionTab =
+  | 'prayers'
+  | 'quran'
+  | 'adhkar'
+  | 'tasbih'
+  | 'weather'
+  | 'qibla'
+  | 'settings'
+
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 export default function Adan2AppPage() {
   const { data, mutate } = useSWR<ApiUserResponse>('/api/user-data', fetcher)
 
-  const [activeTab, setActiveTab] = useState<
-    'prayers' | 'ai' | 'qibla' | 'settings'
-  >('prayers')
+  const [activeTab, setActiveTab] = useState<AppSectionTab>('prayers')
   const [isDark, setIsDark] = useState(true)
   const [lang, setLang] = useState<'ar' | 'en'>('ar')
   const [cityId, setCityId] = useState('rabat')
@@ -63,9 +75,11 @@ export default function Adan2AppPage() {
   const [gpsLoading, setGpsLoading] = useState(false)
   const [now, setNow] = useState<Date | null>(null)
   const [toastAlert, setToastAlert] = useState<string | null>(null)
-  const [lastTriggeredAlertKey, setLastTriggeredAlertKey] = useState<string | null>(null)
+  const [lastTriggeredAlertKey, setLastTriggeredAlertKey] = useState<
+    string | null
+  >(null)
 
-  // Live 1-second astronomical countdown ticker (client-hydrated)
+  // Live 1-second astronomical countdown ticker
   useEffect(() => {
     setNow(new Date())
     const timer = setInterval(() => {
@@ -74,18 +88,47 @@ export default function Adan2AppPage() {
     return () => clearInterval(timer)
   }, [])
 
-  // Sync initial preferences when server data arrives
+  // Load persisted theme and offline preferences from localStorage first
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('adan2_theme')
+      if (savedTheme === 'light') {
+        setIsDark(false)
+      } else if (savedTheme === 'dark') {
+        setIsDark(true)
+      }
+      const savedCity = localStorage.getItem('adan2_city_id')
+      if (savedCity && CITY_PRESETS.some((c) => c.id === savedCity)) {
+        setCityId(savedCity)
+      }
+      const savedMuezzin = localStorage.getItem('adan2_muezzin_id')
+      if (savedMuezzin) {
+        setMuezzinId(savedMuezzin)
+      }
+    } catch {
+      // ignore
+    }
+  }, [])
+
+  // Sync preferences when server data arrives
   useEffect(() => {
     if (data?.preferences) {
-      setCityId(data.preferences.cityId || 'rabat')
+      if (
+        data.preferences.cityId &&
+        CITY_PRESETS.some((c) => c.id === data.preferences.cityId)
+      ) {
+        setCityId(data.preferences.cityId)
+      }
       setCalcMethod(data.preferences.calcMethod || 'morocco_habous')
       setMadhab(data.preferences.madhab || 'shafi')
-      setMuezzinId(data.preferences.muezzinId || 'morocco_rabat_habous')
+      if (data.preferences.muezzinId) {
+        setMuezzinId(data.preferences.muezzinId)
+      }
       setLang(data.preferences.language || 'ar')
     }
   }, [data?.preferences])
 
-  // Apply Dark/Light theme and RTL/LTR direction on document root
+  // Apply Dark/Light theme and RTL/LTR direction on document root & persist
   useEffect(() => {
     const html = document.documentElement
     if (isDark) {
@@ -97,6 +140,11 @@ export default function Adan2AppPage() {
     }
     html.dir = lang === 'ar' ? 'rtl' : 'ltr'
     html.lang = lang
+    try {
+      localStorage.setItem('adan2_theme', isDark ? 'dark' : 'light')
+    } catch {
+      // ignore
+    }
   }, [isDark, lang])
 
   const selectedPreset =
@@ -111,7 +159,7 @@ export default function Adan2AppPage() {
     activeLng,
     calcMethod,
     madhab,
-    now || new Date('2026-10-14T14:00:00Z'),
+    now || new Date('2026-10-15T14:00:00Z'),
     selectedPreset.timeZone
   )
 
@@ -147,7 +195,7 @@ export default function Adan2AppPage() {
       playAdhanByMuezzinId(muezzinId)
       setToastAlert(
         isAr
-          ? `حان الآن موعد أذان ${nextP.nameAr} حسب التوقيت المحلي`
+          ? `حان الآن موعد أذان ${nextP.nameAr} حسب التوقيت المحلي لمدينة ${selectedPreset.nameAr}`
           : `It is now time for ${nextP.nameEn} Adhan`
       )
     } else {
@@ -169,26 +217,36 @@ export default function Adan2AppPage() {
     lastTriggeredAlertKey,
     muezzinId,
     isAr,
+    selectedPreset.nameAr,
   ])
 
   const handleSelectCity = async (newCityId: string) => {
     setCityId(newCityId)
+    try {
+      localStorage.setItem('adan2_city_id', newCityId)
+    } catch {
+      // ignore
+    }
     const preset = CITY_PRESETS.find((c) => c.id === newCityId)
     if (preset) {
       setCalcMethod(preset.method)
     }
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'update_preferences',
-        preferences: {
-          cityId: newCityId,
-          calcMethod: preset ? preset.method : calcMethod,
-        },
-      }),
-    })
-    mutate()
+    try {
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_preferences',
+          preferences: {
+            cityId: newCityId,
+            calcMethod: preset ? preset.method : calcMethod,
+          },
+        }),
+      })
+      mutate()
+    } catch {
+      // Works offline via local state + localStorage
+    }
   }
 
   const handleUseGps = () => {
@@ -210,7 +268,7 @@ export default function Adan2AppPage() {
         setGpsLoading(false)
         setToastAlert(
           isAr
-            ? 'تعذر الوصول لخدمة الموقع، تم اعتماد الرباط (وزارة الأوقاف المغربية) افتراضياً'
+            ? 'تعذر الوصول لخدمة الموقع، تم اعتماد توقيت الرباط (وزارة الأوقاف المغربية) افتراضياً'
             : 'GPS permission unavailable; using Rabat coordinates.'
         )
         setTimeout(() => setToastAlert(null), 3500)
@@ -221,28 +279,36 @@ export default function Adan2AppPage() {
 
   const handleChangeMethod = async (newMethod: CalcMethodId) => {
     setCalcMethod(newMethod)
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'update_preferences',
-        preferences: { calcMethod: newMethod },
-      }),
-    })
-    mutate()
+    try {
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_preferences',
+          preferences: { calcMethod: newMethod },
+        }),
+      })
+      mutate()
+    } catch {
+      // ignore offline
+    }
   }
 
   const handleChangeMadhab = async (newMadhab: 'shafi' | 'hanafi') => {
     setMadhab(newMadhab)
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'update_preferences',
-        preferences: { madhab: newMadhab },
-      }),
-    })
-    mutate()
+    try {
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_preferences',
+          preferences: { madhab: newMadhab },
+        }),
+      })
+      mutate()
+    } catch {
+      // ignore offline
+    }
   }
 
   const handleLogPrayer = async (
@@ -258,44 +324,57 @@ export default function Adan2AppPage() {
       khushuRating,
       loggedAt: new Date().toISOString(),
     }
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'log_prayer',
-        entry,
-      }),
-    })
-    mutate()
+    try {
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'log_prayer',
+          entry,
+        }),
+      })
+      mutate()
+    } catch {
+      // ignore offline
+    }
   }
 
   const handleToggleNotification = async (
     prayerId: PrayerId,
     patch: Partial<PrayerNotificationSetting>
   ) => {
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'toggle_notification',
-        prayerId,
-        patch,
-      }),
-    })
-    mutate()
+    try {
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'toggle_notification',
+          prayerId,
+          patch,
+        }),
+      })
+      mutate()
+    } catch {
+      // ignore offline
+    }
   }
 
   const handleSelectMuezzin = async (id: string) => {
     setMuezzinId(id)
-    await fetch('/api/user-data', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'update_preferences',
-        preferences: { muezzinId: id },
-      }),
-    })
-    mutate()
+    try {
+      localStorage.setItem('adan2_muezzin_id', id)
+      await fetch('/api/user-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update_preferences',
+          preferences: { muezzinId: id },
+        }),
+      })
+      mutate()
+    } catch {
+      // ignore offline
+    }
   }
 
   const defaultNotifications: Record<PrayerId, PrayerNotificationSetting> = {
@@ -341,6 +420,26 @@ export default function Adan2AppPage() {
     },
   }
 
+  const navTabs: {
+    id: AppSectionTab
+    labelAr: string
+    labelEn: string
+    icon: React.ComponentType<{ className?: string }>
+  }[] = [
+    { id: 'prayers', labelAr: 'المواقيت', labelEn: 'Prayers', icon: Clock },
+    { id: 'quran', labelAr: 'القرآن الكريم', labelEn: 'Quran', icon: BookOpen },
+    { id: 'adhkar', labelAr: 'الأذكار', labelEn: 'Adhkar', icon: Sparkles },
+    { id: 'tasbih', labelAr: 'المسبحة', labelEn: 'Tasbih', icon: Hand },
+    { id: 'weather', labelAr: 'الطقس', labelEn: 'Weather', icon: CloudSun },
+    { id: 'qibla', labelAr: 'القبلة والفقه', labelEn: 'Qibla', icon: Compass },
+    {
+      id: 'settings',
+      labelAr: 'الأذان والإعدادات',
+      labelEn: 'Adhan & Settings',
+      icon: Settings,
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-background text-foreground islamic-pattern-bg flex flex-col">
       {/* 1. Dynamic Top Prayer Ticker */}
@@ -357,21 +456,23 @@ export default function Adan2AppPage() {
         }}
       />
 
-      {/* 2. App Header Bar */}
-      <header className="sticky top-0 z-30 border-b border-border/60 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-3 py-2.5">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-amber-300 shadow-sm ring-1 ring-amber-400/40">
+      {/* 2. Clean Header Bar (No duplicate buttons) */}
+      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-md">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-2.5">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
               <Sparkles className="h-4 w-4" />
             </div>
             <div>
               <h1 className="font-serif text-base font-bold leading-none text-foreground sm:text-lg">
-                {isAr ? 'أذان ٢ الذكي' : 'Adan 2 AI'}
+                {isAr
+                  ? 'أذان المغرب والقرآن الكريم'
+                  : 'Morocco Adhan & Noble Quran'}
               </h1>
               <p className="mt-0.5 text-[10px] text-muted-foreground">
                 {isAr
-                  ? 'مواقيت وزارة الأوقاف المغربية • أصوات مغاربية وعالمية'
-                  : 'Morocco Habous API • Maghrebi & World Adhan Voices'}
+                  ? 'مواقيت وزارة الأوقاف المغربية • القرآن والأذكار والمسبحة بدون إنترنت'
+                  : 'Morocco Ministry of Habous • Offline Quran, Adhkar & Tasbih'}
               </p>
             </div>
           </div>
@@ -379,57 +480,54 @@ export default function Adan2AppPage() {
           <div className="flex items-center gap-1.5">
             <button
               type="button"
-              onClick={() => setActiveTab('settings')}
-              className={`inline-flex items-center gap-1 rounded-xl border px-2.5 py-1.5 text-xs font-semibold transition ${
-                activeTab === 'settings'
-                  ? 'border-amber-400/50 bg-emerald-700 text-white'
-                  : 'border-border bg-card text-foreground hover:bg-secondary'
-              }`}
-            >
-              <Settings className="h-3.5 w-3.5 text-amber-400" />
-              <span>{isAr ? 'الإعدادات والأصوات' : 'Settings'}</span>
-            </button>
-
-            <button
-              type="button"
               onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-              className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs font-semibold text-foreground transition hover:bg-secondary"
+              className="inline-flex items-center gap-1 rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs font-bold text-foreground transition hover:bg-secondary"
               aria-label="Toggle language"
             >
-              <Globe className="h-3.5 w-3.5 text-emerald-400" />
+              <Globe className="h-3.5 w-3.5 text-primary" />
               <span>{lang === 'ar' ? 'EN' : 'عربي'}</span>
             </button>
 
             <button
               type="button"
               onClick={() => setIsDark(!isDark)}
-              className="inline-flex items-center justify-center rounded-xl border border-border bg-card p-1.5 text-foreground transition hover:bg-secondary"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-2.5 py-1.5 text-xs font-bold text-foreground transition hover:bg-secondary"
               aria-label={
                 isAr ? 'تبديل الوضع الليلي والنهاري' : 'Toggle theme'
               }
             >
               {isDark ? (
-                <Sun className="h-4 w-4 text-amber-400" />
+                <>
+                  <Sun className="h-4 w-4 text-amber-400" />
+                  <span className="hidden sm:inline">
+                    {isAr ? 'الوضع النهاري' : 'Light'}
+                  </span>
+                </>
               ) : (
-                <Moon className="h-4 w-4 text-emerald-700" />
+                <>
+                  <Moon className="h-4 w-4 text-primary" />
+                  <span className="hidden sm:inline">
+                    {isAr ? 'الوضع الليلي' : 'Dark'}
+                  </span>
+                </>
               )}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Optional Toast Banner for Pre-Adhan Audio Alert Preview */}
+      {/* Optional Toast Banner */}
       {toastAlert && (
-        <div className="mx-auto mt-2 max-w-4xl px-3">
-          <div className="rounded-xl border border-amber-400/50 bg-amber-500/15 px-3 py-2 text-xs font-semibold text-amber-300 shadow-sm">
+        <div className="mx-auto mt-2 max-w-5xl px-3 w-full">
+          <div className="rounded-xl border border-amber-500/40 bg-amber-500/15 px-3 py-2 text-xs font-bold text-amber-800 dark:text-amber-300 shadow-sm">
             {toastAlert}
           </div>
         </div>
       )}
 
       {/* 3. Main Content Container */}
-      <main className="mx-auto w-full max-w-4xl flex-1 space-y-4 px-3 py-3.5 pb-16">
-        {/* Hero Countdown & Ramadan Imsak/Iftar Card */}
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 px-3 py-3.5 pb-16">
+        {/* Hero Countdown & Moroccan City Selector */}
         <HeroPrayerCard
           schedule={schedule}
           cityId={cityId}
@@ -441,69 +539,38 @@ export default function Adan2AppPage() {
           onUseGps={handleUseGps}
           onChangeMethod={handleChangeMethod}
           onLogPrayer={handleLogPrayer}
-          onOpenSettings={() => setActiveTab('settings')}
           gpsLoading={gpsLoading}
         />
 
-        {/* Segmented Navigation Tabs (4 Tabs including Settings & Voices) */}
+        {/* Unified 7-Section Navigation Bar */}
         <nav
           aria-label={isAr ? 'أقسام التطبيق' : 'App sections'}
-          className="grid grid-cols-4 gap-1 rounded-2xl border border-border bg-card/90 p-1 shadow-sm"
+          className="grid grid-cols-4 gap-1 rounded-2xl border border-border bg-card p-1.5 shadow-sm sm:grid-cols-7"
         >
-          <button
-            type="button"
-            onClick={() => setActiveTab('prayers')}
-            className={`flex items-center justify-center gap-1 rounded-xl py-2 px-1 text-[11px] sm:text-xs font-bold transition ${
-              activeTab === 'prayers'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Clock className="h-3.5 w-3.5 shrink-0" />
-            <span>{isAr ? 'المواقيت' : 'Prayers'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('settings')}
-            className={`flex items-center justify-center gap-1 rounded-xl py-2 px-1 text-[11px] sm:text-xs font-bold transition ${
-              activeTab === 'settings'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Settings className="h-3.5 w-3.5 shrink-0" />
-            <span>{isAr ? 'الإعدادات والأصوات' : 'Voices & API'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('ai')}
-            className={`flex items-center justify-center gap-1 rounded-xl py-2 px-1 text-[11px] sm:text-xs font-bold transition ${
-              activeTab === 'ai'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <BrainCircuit className="h-3.5 w-3.5 shrink-0" />
-            <span>{isAr ? 'الذكاء الروحي' : 'AI Coach'}</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab('qibla')}
-            className={`flex items-center justify-center gap-1 rounded-xl py-2 px-1 text-[11px] sm:text-xs font-bold transition ${
-              activeTab === 'qibla'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Compass className="h-3.5 w-3.5 shrink-0" />
-            <span>{isAr ? 'القبلة والفقه' : 'Qibla & Fiqh'}</span>
-          </button>
+          {navTabs.map((tab) => {
+            const Icon = tab.icon
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center justify-center gap-1.5 rounded-xl py-2 px-2 text-[11px] sm:text-xs font-bold transition ${
+                  isActive
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:bg-secondary/60 hover:text-foreground'
+                }`}
+              >
+                <Icon className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">
+                  {isAr ? tab.labelAr : tab.labelEn}
+                </span>
+              </button>
+            )
+          })}
         </nav>
 
-        {/* Active Tab Section */}
+        {/* Active Section */}
         {activeTab === 'prayers' && (
           <PrayerTimesList
             schedule={schedule}
@@ -515,6 +582,29 @@ export default function Adan2AppPage() {
             lang={lang}
             onLogPrayer={handleLogPrayer}
             onToggleNotification={handleToggleNotification}
+          />
+        )}
+
+        {activeTab === 'quran' && <QuranReader lang={lang} />}
+
+        {activeTab === 'adhkar' && <AdhkarSection lang={lang} />}
+
+        {activeTab === 'tasbih' && <ElectronicTasbih lang={lang} />}
+
+        {activeTab === 'weather' && (
+          <WeatherSection
+            cityId={cityId}
+            customCoords={customCoords}
+            lang={lang}
+            onSelectCity={handleSelectCity}
+          />
+        )}
+
+        {activeTab === 'qibla' && (
+          <QiblaCalendarFiqh
+            schedule={schedule}
+            lang={lang}
+            lastSyncedAt={data?.lastSyncedAt || '2026-10-15T14:00:00.000Z'}
           />
         )}
 
@@ -533,25 +623,6 @@ export default function Adan2AppPage() {
             onChangeMadhab={handleChangeMadhab}
             onSelectMuezzin={handleSelectMuezzin}
             onToggleNotification={handleToggleNotification}
-          />
-        )}
-
-        {activeTab === 'ai' && (
-          <AiSpiritualCoach
-            insights={data?.predictiveInsights || []}
-            progressDays={data?.progressDays || []}
-            streakDays={data?.streakDays || 12}
-            lang={lang}
-          />
-        )}
-
-        {activeTab === 'qibla' && (
-          <QiblaCalendarFiqh
-            schedule={schedule}
-            muezzinId={muezzinId}
-            lang={lang}
-            onSelectMuezzin={handleSelectMuezzin}
-            lastSyncedAt={data?.lastSyncedAt || '2026-10-14T14:00:00.000Z'}
           />
         )}
       </main>

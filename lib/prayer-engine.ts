@@ -35,367 +35,142 @@ export interface CityPreset {
   nameEn: string
   countryAr: string
   countryEn: string
+  regionAr: string
   region: RegionGroup
   lat: number
   lng: number
   timeZone: string
   method: CalcMethodId
-  habousCityKey?: string
+  habousCityKey: string
+  habousVilleCode: number
 }
 
+// القائمة الشاملة لجميع المدن المغربية في الجهات الـ 12 للمملكة المغربية وفق وزارة الأوقاف والشؤون الإسلامية
 export const CITY_PRESETS: CityPreset[] = [
-  // المدن المغربية — وزارة الأوقاف والشؤون الإسلامية بالمغرب
-  {
-    id: 'rabat',
-    nameAr: 'الرباط',
-    nameEn: 'Rabat',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 34.0209,
-    lng: -6.8416,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'rabat',
-  },
-  {
-    id: 'casablanca',
-    nameAr: 'الدار البيضاء',
-    nameEn: 'Casablanca',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 33.5731,
-    lng: -7.5898,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'casablanca',
-  },
-  {
-    id: 'fes',
-    nameAr: 'فاس',
-    nameEn: 'Fes',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 34.0181,
-    lng: -5.0078,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'fes',
-  },
-  {
-    id: 'marrakech',
-    nameAr: 'مراكش',
-    nameEn: 'Marrakech',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 31.6295,
-    lng: -7.9811,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'marrakech',
-  },
-  {
-    id: 'tangier',
-    nameAr: 'طنجة',
-    nameEn: 'Tangier',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 35.7595,
-    lng: -5.834,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'tangier',
-  },
-  {
-    id: 'agadir',
-    nameAr: 'أكادير',
-    nameEn: 'Agadir',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 30.4278,
-    lng: -9.5981,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'agadir',
-  },
-  {
-    id: 'meknes',
-    nameAr: 'مكناس',
-    nameEn: 'Meknes',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 33.8935,
-    lng: -5.5473,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'meknes',
-  },
-  {
-    id: 'oujda',
-    nameAr: 'وجدة',
-    nameEn: 'Oujda',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 34.6814,
-    lng: -1.9086,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'oujda',
-  },
-  {
-    id: 'tetouan',
-    nameAr: 'تطوان',
-    nameEn: 'Tetouan',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 35.5785,
-    lng: -5.3684,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'tetouan',
-  },
-  {
-    id: 'laayoune',
-    nameAr: 'العيون',
-    nameEn: 'Laayoune',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    lat: 27.1536,
-    lng: -13.2033,
-    timeZone: 'Africa/Casablanca',
-    method: 'morocco_habous',
-    habousCityKey: 'laayoune',
-  },
-  // باقي دول المغرب العربي
-  {
-    id: 'algiers',
-    nameAr: 'الجزائر العاصمة',
-    nameEn: 'Algiers',
-    countryAr: 'الجزائر',
-    countryEn: 'Algeria',
-    region: 'maghreb',
-    lat: 36.7538,
-    lng: 3.0588,
-    timeZone: 'Africa/Algiers',
-    method: 'algeria_awqaf',
-  },
-  {
-    id: 'tunis',
-    nameAr: 'تونس العاصمة',
-    nameEn: 'Tunis',
-    countryAr: 'تونس',
-    countryEn: 'Tunisia',
-    region: 'maghreb',
-    lat: 36.8065,
-    lng: 10.1815,
-    timeZone: 'Africa/Tunis',
-    method: 'tunisia_awqaf',
-  },
-  {
-    id: 'tripoli',
-    nameAr: 'طرابلس',
-    nameEn: 'Tripoli',
-    countryAr: 'ليبيا',
-    countryEn: 'Libya',
-    region: 'maghreb',
-    lat: 32.8872,
-    lng: 13.1913,
-    timeZone: 'Africa/Tripoli',
-    method: 'egyptian',
-  },
-  {
-    id: 'nouakchott',
-    nameAr: 'نواكشوط',
-    nameEn: 'Nouakchott',
-    countryAr: 'موريتانيا',
-    countryEn: 'Mauritania',
-    region: 'maghreb',
-    lat: 18.0735,
-    lng: -15.9582,
-    timeZone: 'Africa/Nouakchott',
-    method: 'muslim_world_league',
-  },
-  // الحرمين الشريفين والخليج
-  {
-    id: 'makkah',
-    nameAr: 'مكة المكرمة',
-    nameEn: 'Makkah',
-    countryAr: 'السعودية',
-    countryEn: 'Saudi Arabia',
-    region: 'haramain_gulf',
-    lat: 21.4225,
-    lng: 39.8262,
-    timeZone: 'Asia/Riyadh',
-    method: 'umm_al_qura',
-  },
-  {
-    id: 'madinah',
-    nameAr: 'المدينة المنورة',
-    nameEn: 'Madinah',
-    countryAr: 'السعودية',
-    countryEn: 'Saudi Arabia',
-    region: 'haramain_gulf',
-    lat: 24.4672,
-    lng: 39.6112,
-    timeZone: 'Asia/Riyadh',
-    method: 'umm_al_qura',
-  },
-  {
-    id: 'riyadh',
-    nameAr: 'الرياض',
-    nameEn: 'Riyadh',
-    countryAr: 'السعودية',
-    countryEn: 'Saudi Arabia',
-    region: 'haramain_gulf',
-    lat: 24.7136,
-    lng: 46.6753,
-    timeZone: 'Asia/Riyadh',
-    method: 'umm_al_qura',
-  },
-  {
-    id: 'dubai',
-    nameAr: 'دبي',
-    nameEn: 'Dubai',
-    countryAr: 'الإمارات',
-    countryEn: 'UAE',
-    region: 'haramain_gulf',
-    lat: 25.2048,
-    lng: 55.2708,
-    timeZone: 'Asia/Dubai',
-    method: 'dubai',
-  },
-  {
-    id: 'doha',
-    nameAr: 'الدوحة',
-    nameEn: 'Doha',
-    countryAr: 'قطر',
-    countryEn: 'Qatar',
-    region: 'haramain_gulf',
-    lat: 25.2854,
-    lng: 51.531,
-    timeZone: 'Asia/Qatar',
-    method: 'qatar',
-  },
-  {
-    id: 'kuwait_city',
-    nameAr: 'مدينة الكويت',
-    nameEn: 'Kuwait City',
-    countryAr: 'الكويت',
-    countryEn: 'Kuwait',
-    region: 'haramain_gulf',
-    lat: 29.3759,
-    lng: 47.9774,
-    timeZone: 'Asia/Kuwait',
-    method: 'kuwait',
-  },
-  // مصر والشام والقدس والعراق
-  {
-    id: 'cairo',
-    nameAr: 'القاهرة',
-    nameEn: 'Cairo',
-    countryAr: 'مصر',
-    countryEn: 'Egypt',
-    region: 'egypt_levant',
-    lat: 30.0444,
-    lng: 31.2357,
-    timeZone: 'Africa/Cairo',
-    method: 'egyptian',
-  },
-  {
-    id: 'alquds',
-    nameAr: 'القدس الشريف',
-    nameEn: 'Al-Quds',
-    countryAr: 'فلسطين',
-    countryEn: 'Palestine',
-    region: 'egypt_levant',
-    lat: 31.7683,
-    lng: 35.2137,
-    timeZone: 'Asia/Jerusalem',
-    method: 'muslim_world_league',
-  },
-  {
-    id: 'damascus',
-    nameAr: 'دمشق',
-    nameEn: 'Damascus',
-    countryAr: 'سوريا',
-    countryEn: 'Syria',
-    region: 'egypt_levant',
-    lat: 33.5138,
-    lng: 36.2765,
-    timeZone: 'Asia/Damascus',
-    method: 'muslim_world_league',
-  },
-  {
-    id: 'baghdad',
-    nameAr: 'بغداد',
-    nameEn: 'Baghdad',
-    countryAr: 'العراق',
-    countryEn: 'Iraq',
-    region: 'egypt_levant',
-    lat: 33.3152,
-    lng: 44.3661,
-    timeZone: 'Asia/Baghdad',
-    method: 'muslim_world_league',
-  },
-  // تركيا وآسيا وأوروبا
-  {
-    id: 'istanbul',
-    nameAr: 'إسطنبول',
-    nameEn: 'Istanbul',
-    countryAr: 'تركيا',
-    countryEn: 'Turkey',
-    region: 'islamic_world',
-    lat: 41.0082,
-    lng: 28.9784,
-    timeZone: 'Europe/Istanbul',
-    method: 'turkey_diyanet',
-  },
-  {
-    id: 'kuala_lumpur',
-    nameAr: 'كوالالمبور',
-    nameEn: 'Kuala Lumpur',
-    countryAr: 'ماليزيا',
-    countryEn: 'Malaysia',
-    region: 'islamic_world',
-    lat: 3.139,
-    lng: 101.6869,
-    timeZone: 'Asia/Kuala_Lumpur',
-    method: 'muslim_world_league',
-  },
-  {
-    id: 'jakarta',
-    nameAr: 'جاكرتا',
-    nameEn: 'Jakarta',
-    countryAr: 'إندونيسيا',
-    countryEn: 'Indonesia',
-    region: 'islamic_world',
-    lat: -6.2088,
-    lng: 106.8456,
-    timeZone: 'Asia/Jakarta',
-    method: 'muslim_world_league',
-  },
-  {
-    id: 'london',
-    nameAr: 'لندن',
-    nameEn: 'London',
-    countryAr: 'المملكة المتحدة',
-    countryEn: 'United Kingdom',
-    region: 'islamic_world',
-    lat: 51.5074,
-    lng: -0.1278,
-    timeZone: 'Europe/London',
-    method: 'muslim_world_league',
-  },
+  // 1. جهة الرباط - سلا - القنيطرة
+  { id: 'rabat', nameAr: 'الرباط', nameEn: 'Rabat', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.0209, lng: -6.8416, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'rabat', habousVilleCode: 1 },
+  { id: 'sale', nameAr: 'سلا', nameEn: 'Sale', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.0531, lng: -6.7985, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sale', habousVilleCode: 2 },
+  { id: 'temara', nameAr: 'تمارة', nameEn: 'Temara', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 33.9287, lng: -6.9066, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'temara', habousVilleCode: 3 },
+  { id: 'skhirat', nameAr: 'الصخيرات', nameEn: 'Skhirat', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 33.8525, lng: -7.0317, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'skhirat', habousVilleCode: 4 },
+  { id: 'kenitra', nameAr: 'القنيطرة', nameEn: 'Kenitra', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.261, lng: -6.5802, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'kenitra', habousVilleCode: 5 },
+  { id: 'khemisset', nameAr: 'الخميسات', nameEn: 'Khemisset', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 33.824, lng: -6.0663, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'khemisset', habousVilleCode: 6 },
+  { id: 'tiflet', nameAr: 'تيفلت', nameEn: 'Tiflet', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 33.8947, lng: -6.3065, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tiflet', habousVilleCode: 7 },
+  { id: 'sidi_kacem', nameAr: 'سيدي قاسم', nameEn: 'Sidi Kacem', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.2215, lng: -5.7078, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sidi_kacem', habousVilleCode: 8 },
+  { id: 'sidi_slimane', nameAr: 'سيدي سليمان', nameEn: 'Sidi Slimane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.2648, lng: -5.926, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sidi_slimane', habousVilleCode: 9 },
+  { id: 'souk_el_arbaa', nameAr: 'سوق الأربعاء الغرب', nameEn: 'Souk El Arbaa', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الرباط - سلا - القنيطرة', region: 'maghreb', lat: 34.6868, lng: -5.9999, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'souk_el_arbaa', habousVilleCode: 10 },
+
+  // 2. جهة الدار البيضاء - سطات
+  { id: 'casablanca', nameAr: 'الدار البيضاء', nameEn: 'Casablanca', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.5731, lng: -7.5898, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'casablanca', habousVilleCode: 58 },
+  { id: 'mohammedia', nameAr: 'المحمدية', nameEn: 'Mohammedia', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.6861, lng: -7.3829, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'mohammedia', habousVilleCode: 59 },
+  { id: 'el_jadida', nameAr: 'الجديدة', nameEn: 'El Jadida', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.2316, lng: -8.5007, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'el_jadida', habousVilleCode: 60 },
+  { id: 'azemmour', nameAr: 'أزمور', nameEn: 'Azemmour', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.2878, lng: -8.3422, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'azemmour', habousVilleCode: 61 },
+  { id: 'settat', nameAr: 'سطات', nameEn: 'Settat', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.001, lng: -7.6166, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'settat', habousVilleCode: 62 },
+  { id: 'berrechid', nameAr: 'برشيد', nameEn: 'Berrechid', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.2655, lng: -7.5875, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'berrechid', habousVilleCode: 63 },
+  { id: 'benslimane', nameAr: 'بن سليمان', nameEn: 'Benslimane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.619, lng: -7.1211, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'benslimane', habousVilleCode: 64 },
+  { id: 'bouznika', nameAr: 'بوزنيقة', nameEn: 'Bouznika', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 33.7894, lng: -7.1597, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'bouznika', habousVilleCode: 65 },
+  { id: 'sidi_bennour', nameAr: 'سيدي بنور', nameEn: 'Sidi Bennour', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الدار البيضاء - سطات', region: 'maghreb', lat: 32.6524, lng: -8.4277, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sidi_bennour', habousVilleCode: 66 },
+
+  // 3. جهة فاس - مكناس
+  { id: 'fes', nameAr: 'فاس', nameEn: 'Fes', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 34.0181, lng: -5.0078, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'fes', habousVilleCode: 81 },
+  { id: 'meknes', nameAr: 'مكناس', nameEn: 'Meknes', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.8935, lng: -5.5473, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'meknes', habousVilleCode: 85 },
+  { id: 'taza', nameAr: 'تازة', nameEn: 'Taza', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 34.2133, lng: -4.0103, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'taza', habousVilleCode: 86 },
+  { id: 'sefrou', nameAr: 'صفرو', nameEn: 'Sefrou', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.8305, lng: -4.8353, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sefrou', habousVilleCode: 87 },
+  { id: 'ifrane', nameAr: 'إفران', nameEn: 'Ifrane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.5228, lng: -5.1109, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ifrane', habousVilleCode: 88 },
+  { id: 'azrou', nameAr: 'أزرو', nameEn: 'Azrou', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.4417, lng: -5.2247, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'azrou', habousVilleCode: 89 },
+  { id: 'el_hajeb', nameAr: 'الحاجب', nameEn: 'El Hajeb', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.6878, lng: -5.371, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'el_hajeb', habousVilleCode: 90 },
+  { id: 'boulemane', nameAr: 'بولمان', nameEn: 'Boulemane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.3625, lng: -4.73, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'boulemane', habousVilleCode: 91 },
+  { id: 'missour', nameAr: 'ميسور', nameEn: 'Missour', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 33.0489, lng: -3.9922, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'missour', habousVilleCode: 92 },
+  { id: 'taounate', nameAr: 'تاونات', nameEn: 'Taounate', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'فاس - مكناس', region: 'maghreb', lat: 34.5369, lng: -4.64, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'taounate', habousVilleCode: 93 },
+
+  // 4. جهة مراكش - آسفي
+  { id: 'marrakech', nameAr: 'مراكش', nameEn: 'Marrakech', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 31.6295, lng: -7.9811, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'marrakech', habousVilleCode: 104 },
+  { id: 'safi', nameAr: 'آسفي', nameEn: 'Safi', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 32.2994, lng: -9.2372, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'safi', habousVilleCode: 105 },
+  { id: 'essaouira', nameAr: 'الصويرة', nameEn: 'Essaouira', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 31.5085, lng: -9.7595, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'essaouira', habousVilleCode: 106 },
+  { id: 'el_kelaa_des_sraghna', nameAr: 'قلعة السراغنة', nameEn: 'El Kelaa des Sraghna', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 32.0481, lng: -7.4083, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'el_kelaa_des_sraghna', habousVilleCode: 107 },
+  { id: 'benguerir', nameAr: 'بن جرير', nameEn: 'Ben Guerir', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 32.2359, lng: -7.9538, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'benguerir', habousVilleCode: 108 },
+  { id: 'youssoufia', nameAr: 'اليوسفية', nameEn: 'Youssoufia', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 32.2463, lng: -8.5294, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'youssoufia', habousVilleCode: 109 },
+  { id: 'chichaoua', nameAr: 'شيشاوة', nameEn: 'Chichaoua', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'مراكش - آسفي', region: 'maghreb', lat: 31.5439, lng: -8.7644, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'chichaoua', habousVilleCode: 110 },
+
+  // 5. جهة طنجة - تطوان - الحسيمة
+  { id: 'tangier', nameAr: 'طنجة', nameEn: 'Tangier', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.7595, lng: -5.834, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tangier', habousVilleCode: 31 },
+  { id: 'tetouan', nameAr: 'تطوان', nameEn: 'Tetouan', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.5785, lng: -5.3684, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tetouan', habousVilleCode: 35 },
+  { id: 'al_hoceima', nameAr: 'الحسيمة', nameEn: 'Al Hoceima', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.2517, lng: -3.9372, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'al_hoceima', habousVilleCode: 36 },
+  { id: 'chefchaouen', nameAr: 'شفشاون', nameEn: 'Chefchaouen', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.1688, lng: -5.2636, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'chefchaouen', habousVilleCode: 37 },
+  { id: 'larache', nameAr: 'العرائش', nameEn: 'Larache', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.1932, lng: -6.1557, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'larache', habousVilleCode: 38 },
+  { id: 'ksar_el_kebir', nameAr: 'القصر الكبير', nameEn: 'Ksar El Kebir', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.0017, lng: -5.9053, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ksar_el_kebir', habousVilleCode: 39 },
+  { id: 'asilah', nameAr: 'أصيلة', nameEn: 'Asilah', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.4652, lng: -6.0342, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'asilah', habousVilleCode: 40 },
+  { id: 'fnideq', nameAr: 'الفنيدق', nameEn: 'Fnideq', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.8491, lng: -5.3575, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'fnideq', habousVilleCode: 41 },
+  { id: 'mdiq', nameAr: 'المضيق', nameEn: "M'diq", countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 35.6858, lng: -5.3253, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'mdiq', habousVilleCode: 42 },
+  { id: 'ouazzane', nameAr: 'وزان', nameEn: 'Ouazzane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'طنجة - تطوان - الحسيمة', region: 'maghreb', lat: 34.7958, lng: -5.5785, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ouazzane', habousVilleCode: 43 },
+
+  // 6. جهة سوس - ماسة
+  { id: 'agadir', nameAr: 'أكادير', nameEn: 'Agadir', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 30.4278, lng: -9.5981, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'agadir', habousVilleCode: 117 },
+  { id: 'inezgane', nameAr: 'إنزكان', nameEn: 'Inezgane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 30.3554, lng: -9.5364, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'inezgane', habousVilleCode: 118 },
+  { id: 'ait_melloul', nameAr: 'أيت ملول', nameEn: 'Ait Melloul', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 30.3342, lng: -9.4972, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ait_melloul', habousVilleCode: 119 },
+  { id: 'taroudant', nameAr: 'تارودانت', nameEn: 'Taroudant', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 30.4703, lng: -8.877, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'taroudant', habousVilleCode: 120 },
+  { id: 'tiznit', nameAr: 'تزنيت', nameEn: 'Tiznit', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 29.6974, lng: -9.7316, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tiznit', habousVilleCode: 121 },
+  { id: 'ouled_teima', nameAr: 'أولاد تايمة', nameEn: 'Ouled Teima', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 30.3947, lng: -9.2089, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ouled_teima', habousVilleCode: 122 },
+  { id: 'tata', nameAr: 'طاطا', nameEn: 'Tata', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'سوس - ماسة', region: 'maghreb', lat: 29.7478, lng: -7.9736, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tata', habousVilleCode: 123 },
+
+  // 7. جهة الشرق
+  { id: 'oujda', nameAr: 'وجدة', nameEn: 'Oujda', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 34.6814, lng: -1.9086, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'oujda', habousVilleCode: 45 },
+  { id: 'nador', nameAr: 'الناظور', nameEn: 'Nador', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 35.1681, lng: -2.9335, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'nador', habousVilleCode: 46 },
+  { id: 'berkane', nameAr: 'بركان', nameEn: 'Berkane', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 34.92, lng: -2.32, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'berkane', habousVilleCode: 47 },
+  { id: 'taourirt', nameAr: 'تاوريرت', nameEn: 'Taourirt', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 34.4073, lng: -2.8973, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'taourirt', habousVilleCode: 48 },
+  { id: 'guercif', nameAr: 'جرسيف', nameEn: 'Guercif', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 34.2257, lng: -3.3536, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'guercif', habousVilleCode: 49 },
+  { id: 'jerada', nameAr: 'جرادة', nameEn: 'Jerada', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 34.31, lng: -2.16, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'jerada', habousVilleCode: 50 },
+  { id: 'figuig', nameAr: 'فكيك', nameEn: 'Figuig', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 32.1089, lng: -1.2286, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'figuig', habousVilleCode: 51 },
+  { id: 'bouarfa', nameAr: 'بوعرفة', nameEn: 'Bouarfa', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الشرق', region: 'maghreb', lat: 32.5333, lng: -1.9667, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'bouarfa', habousVilleCode: 52 },
+
+  // 8. جهة بني ملال - خنيفرة
+  { id: 'beni_mellal', nameAr: 'بني ملال', nameEn: 'Beni Mellal', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.3373, lng: -6.3498, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'beni_mellal', habousVilleCode: 71 },
+  { id: 'khouribga', nameAr: 'خريبكة', nameEn: 'Khouribga', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.8811, lng: -6.9063, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'khouribga', habousVilleCode: 72 },
+  { id: 'khenifra', nameAr: 'خنيفرة', nameEn: 'Khenifra', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.934, lng: -5.6675, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'khenifra', habousVilleCode: 73 },
+  { id: 'fqih_ben_salah', nameAr: 'الفقيه بن صالح', nameEn: 'Fqih Ben Salah', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.5009, lng: -6.6878, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'fqih_ben_salah', habousVilleCode: 74 },
+  { id: 'azilal', nameAr: 'أزيلال', nameEn: 'Azilal', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 31.9616, lng: -6.5711, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'azilal', habousVilleCode: 75 },
+  { id: 'oued_zem', nameAr: 'وادي زم', nameEn: 'Oued Zem', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.8628, lng: -6.5736, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'oued_zem', habousVilleCode: 76 },
+  { id: 'kasba_tadla', nameAr: 'قصبة تادلة', nameEn: 'Kasba Tadla', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'بني ملال - خنيفرة', region: 'maghreb', lat: 32.5978, lng: -6.2683, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'kasba_tadla', habousVilleCode: 77 },
+
+  // 9. جهة درعة - تافيلالت
+  { id: 'errachidia', nameAr: 'الرشيدية', nameEn: 'Errachidia', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 31.9314, lng: -4.4244, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'errachidia', habousVilleCode: 128 },
+  { id: 'ouarzazate', nameAr: 'ورزازات', nameEn: 'Ouarzazate', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 30.9189, lng: -6.8934, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'ouarzazate', habousVilleCode: 129 },
+  { id: 'midelt', nameAr: 'ميدلت', nameEn: 'Midelt', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 32.6852, lng: -4.7451, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'midelt', habousVilleCode: 130 },
+  { id: 'tinghir', nameAr: 'تنغير', nameEn: 'Tinghir', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 31.5147, lng: -5.5328, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tinghir', habousVilleCode: 131 },
+  { id: 'zagora', nameAr: 'زاكورة', nameEn: 'Zagora', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 30.3324, lng: -5.8384, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'zagora', habousVilleCode: 132 },
+  { id: 'arfoud', nameAr: 'أرفود', nameEn: 'Arfoud', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 31.4347, lng: -4.2328, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'arfoud', habousVilleCode: 133 },
+  { id: 'rissani', nameAr: 'الريصاني', nameEn: 'Rissani', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'درعة - تافيلالت', region: 'maghreb', lat: 31.2833, lng: -4.2667, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'rissani', habousVilleCode: 134 },
+
+  // 10. جهة كلميم - واد نون
+  { id: 'guelmim', nameAr: 'كلميم', nameEn: 'Guelmim', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'كلميم - واد نون', region: 'maghreb', lat: 28.987, lng: -10.0574, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'guelmim', habousVilleCode: 136 },
+  { id: 'tan_tan', nameAr: 'طانطان', nameEn: 'Tan-Tan', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'كلميم - واد نون', region: 'maghreb', lat: 28.438, lng: -11.1032, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tan_tan', habousVilleCode: 137 },
+  { id: 'sidi_ifni', nameAr: 'سيدي إفني', nameEn: 'Sidi Ifni', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'كلميم - واد نون', region: 'maghreb', lat: 29.3797, lng: -10.173, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'sidi_ifni', habousVilleCode: 138 },
+  { id: 'assa', nameAr: 'آسا', nameEn: 'Assa', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'كلميم - واد نون', region: 'maghreb', lat: 28.6094, lng: -9.4297, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'assa', habousVilleCode: 139 },
+
+  // 11. جهة العيون - الساقية الحمراء
+  { id: 'laayoune', nameAr: 'العيون', nameEn: 'Laayoune', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'العيون - الساقية الحمراء', region: 'maghreb', lat: 27.1536, lng: -13.2033, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'laayoune', habousVilleCode: 142 },
+  { id: 'smara', nameAr: 'السمارة', nameEn: 'Smara', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'العيون - الساقية الحمراء', region: 'maghreb', lat: 26.7384, lng: -11.6719, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'smara', habousVilleCode: 143 },
+  { id: 'boujdour', nameAr: 'بوجدور', nameEn: 'Boujdour', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'العيون - الساقية الحمراء', region: 'maghreb', lat: 26.1259, lng: -14.4842, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'boujdour', habousVilleCode: 144 },
+  { id: 'tarfaya', nameAr: 'طرفاية', nameEn: 'Tarfaya', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'العيون - الساقية الحمراء', region: 'maghreb', lat: 27.9392, lng: -12.9261, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'tarfaya', habousVilleCode: 145 },
+
+  // 12. جهة الداخلة - وادي الذهب
+  { id: 'dakhla', nameAr: 'الداخلة', nameEn: 'Dakhla', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الداخلة - وادي الذهب', region: 'maghreb', lat: 23.6848, lng: -15.9579, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'dakhla', habousVilleCode: 150 },
+  { id: 'lagouira', nameAr: 'الكويرة', nameEn: 'Lagouira', countryAr: 'المغرب', countryEn: 'Morocco', regionAr: 'الداخلة - وادي الذهب', region: 'maghreb', lat: 20.8333, lng: -17.0917, timeZone: 'Africa/Casablanca', method: 'morocco_habous', habousCityKey: 'lagouira', habousVilleCode: 151 },
 ]
+
+export const MOROCCO_REGIONS_ORDER = [
+  'الرباط - سلا - القنيطرة',
+  'الدار البيضاء - سطات',
+  'فاس - مكناس',
+  'مراكش - آسفي',
+  'طنجة - تطوان - الحسيمة',
+  'سوس - ماسة',
+  'الشرق',
+  'بني ملال - خنيفرة',
+  'درعة - تافيلالت',
+  'كلميم - واد نون',
+  'العيون - الساقية الحمراء',
+  'الداخلة - وادي الذهب',
+] as const
 
 export const CALC_METHODS: {
   id: CalcMethodId
@@ -405,26 +180,9 @@ export const CALC_METHODS: {
 }[] = [
   {
     id: 'morocco_habous',
-    nameAr: 'وزارة الأوقاف والشؤون الإسلامية بالمغرب (Habous API)',
+    nameAr: 'وزارة الأوقاف والشؤون الإسلامية بالمغرب (المعيار الرسمي)',
     nameEn: 'Moroccan Ministry of Habous & Islamic Affairs (Method 21)',
     badgeAr: 'رسمي - المغرب',
-  },
-  {
-    id: 'algeria_awqaf',
-    nameAr: 'وزارة الشؤون الدينية والأوقاف بالجزائر',
-    nameEn: 'Algerian Ministry of Religious Affairs',
-    badgeAr: 'المغرب العربي',
-  },
-  {
-    id: 'tunisia_awqaf',
-    nameAr: 'وزارة الشؤون الدينية بالجمهورية التونسية',
-    nameEn: 'Tunisian Ministry of Religious Affairs',
-    badgeAr: 'المغرب العربي',
-  },
-  {
-    id: 'umm_al_qura',
-    nameAr: 'تقويم أم القرى (مكة المكرمة)',
-    nameEn: 'Umm Al-Qura University, Makkah',
   },
   {
     id: 'muslim_world_league',
@@ -432,39 +190,14 @@ export const CALC_METHODS: {
     nameEn: 'Muslim World League (MWL)',
   },
   {
+    id: 'umm_al_qura',
+    nameAr: 'تقويم أم القرى (مكة المكرمة)',
+    nameEn: 'Umm Al-Qura University, Makkah',
+  },
+  {
     id: 'egyptian',
     nameAr: 'الهيئة المصرية العامة للمساحة',
     nameEn: 'Egyptian General Authority',
-  },
-  {
-    id: 'dubai',
-    nameAr: 'دائرة الشؤون الإسلامية بدبي',
-    nameEn: 'Dubai Islamic Affairs',
-  },
-  {
-    id: 'qatar',
-    nameAr: 'دار التقويم القطري',
-    nameEn: 'Qatar Calendar House',
-  },
-  {
-    id: 'kuwait',
-    nameAr: 'وزارة الأوقاف الكويتية',
-    nameEn: 'Kuwait Ministry of Awqaf',
-  },
-  {
-    id: 'turkey_diyanet',
-    nameAr: 'رئاسة الشؤون الدينية التركية (ديانت)',
-    nameEn: 'Diyanet İşleri Başkanlığı, Turkey',
-  },
-  {
-    id: 'isna',
-    nameAr: 'الجمعية الإسلامية لأمريكا الشمالية',
-    nameEn: 'ISNA (North America)',
-  },
-  {
-    id: 'karachi',
-    nameAr: 'جامعة العلوم الإسلامية بكراتشي',
-    nameEn: 'University of Islamic Sciences, Karachi',
   },
 ]
 
@@ -475,7 +208,7 @@ export function getCalculationParams(
   let params: CalculationParameters
   switch (method) {
     case 'morocco_habous': {
-      // Official Moroccan Ministry of Habous parameters: Fajr 19°, Isha 17°, +5m Dhuhr precaution, +4m Maghrib precaution
+      // معايير وزارة الأوقاف والشؤون الإسلامية بالمغرب: زاوية الفجر 19°، العشاء 17°، احتياط الزوال +5 دقائق، احتياط المغرب +4 دقائق
       params = CalculationMethod.Other()
       params.fajrAngle = 19
       params.ishaAngle = 17
@@ -483,44 +216,11 @@ export function getCalculationParams(
       params.adjustments.maghrib = 4
       break
     }
-    case 'algeria_awqaf': {
-      // Algerian Ministry: Fajr 18°, Isha 17°, +3m Maghrib
-      params = CalculationMethod.Other()
-      params.fajrAngle = 18
-      params.ishaAngle = 17
-      params.adjustments.maghrib = 3
-      break
-    }
-    case 'tunisia_awqaf': {
-      // Tunisian Ministry: Fajr 18°, Isha 18°
-      params = CalculationMethod.Other()
-      params.fajrAngle = 18
-      params.ishaAngle = 18
-      break
-    }
-    case 'turkey_diyanet':
-      params = CalculationMethod.Turkey()
-      break
     case 'umm_al_qura':
       params = CalculationMethod.UmmAlQura()
       break
     case 'egyptian':
       params = CalculationMethod.Egyptian()
-      break
-    case 'dubai':
-      params = CalculationMethod.Dubai()
-      break
-    case 'qatar':
-      params = CalculationMethod.Qatar()
-      break
-    case 'kuwait':
-      params = CalculationMethod.Kuwait()
-      break
-    case 'isna':
-      params = CalculationMethod.NorthAmerica()
-      break
-    case 'karachi':
-      params = CalculationMethod.Karachi()
       break
     case 'muslim_world_league':
     default:
@@ -653,23 +353,7 @@ const PRAYER_META: Record<
 }
 
 const TIMEZONE_UTC_OFFSET_MINUTES: Record<string, number> = {
-  'Africa/Casablanca': 60,
-  'Africa/Algiers': 60,
-  'Africa/Tunis': 60,
-  'Africa/Tripoli': 120,
-  'Africa/Nouakchott': 0,
-  'Asia/Riyadh': 180,
-  'Asia/Dubai': 240,
-  'Asia/Qatar': 180,
-  'Asia/Kuwait': 180,
-  'Africa/Cairo': 180,
-  'Asia/Jerusalem': 180,
-  'Asia/Damascus': 180,
-  'Asia/Baghdad': 180,
-  'Europe/Istanbul': 180,
-  'Asia/Kuala_Lumpur': 480,
-  'Asia/Jakarta': 420,
-  'Europe/London': 60,
+  'Africa/Casablanca': 60, // التوقيت الرسمي للمملكة المغربية UTC+1
   UTC: 0,
 }
 
@@ -730,7 +414,6 @@ export function computePrayerSchedule(
   const coords = new Coordinates(lat, lng)
   const params = getCalculationParams(method, madhab)
   const shiftedNow = getShiftedUtcDate(now, timeZone)
-  // Use Date.UTC so the astronomical engine receives the exact solar calendar date in the target city regardless of local server/browser timezone
   const solarDate = new Date(
     Date.UTC(
       shiftedNow.getUTCFullYear(),
@@ -745,7 +428,6 @@ export function computePrayerSchedule(
   const sunnahTimes = new SunnahTimes(prayerTimes)
   const qiblaAngle = Math.round(Qibla(coords) * 10) / 10
 
-  // Imsak is traditionally 10 minutes before Fajr
   const imsakTime = new Date(prayerTimes.fajr.getTime() - 10 * 60 * 1000)
   const iftarTime = prayerTimes.maghrib
 
@@ -757,7 +439,6 @@ export function computePrayerSchedule(
     { id: 'isha', time: prayerTimes.isha },
   ]
 
-  // Find next prayer
   let nextPrayerEntry = rawEntries.find(
     (item) => item.time.getTime() > now.getTime()
   )
@@ -860,7 +541,7 @@ export function computePrayerSchedule(
     hijriMonthAr = 'جمادى الأولى'
   }
 
-  const gregorianAr = new Intl.DateTimeFormat('ar-EG-u-nu-latn', {
+  const gregorianAr = new Intl.DateTimeFormat('ar-MA-u-nu-latn', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -937,21 +618,21 @@ export interface MuezzinProfile {
   takbeerStyleAr: string
   baseFreq: number
   audioStreamUrl: string
-  offlineSlot?: 1 | 2 | 3 | 4 | 5
-  isCoreOffline?: boolean
+  offlineSlot: 1 | 2 | 3 | 4 | 5
+  isCoreOffline: boolean
 }
 
+// 5 أصوات أذان مختارة بعناية فقط — مخزنة محلياً وتعمل 100% دون الحاجة إلى الإنترنت
 export const MUEZZIN_PROFILES: MuezzinProfile[] = [
-  // === الأصوات الـ 5 الأساسية المخزنة محلياً (تعمل 100% بدون إنترنت) ===
   {
     id: 'morocco_rabat_habous',
-    nameAr: 'الأذان الأول (بدون إنترنت): الأذان المغربي الرسمي — الرباط',
-    nameEn: 'Offline Adhan 1: Official Moroccan Habous (Rabat)',
+    nameAr: 'الأذان المغربي الرسمي — صومعة حسان (الرباط)',
+    nameEn: 'Official Moroccan Adhan — Hassan Mosque (Rabat)',
     countryAr: 'المغرب',
     countryEn: 'Morocco',
     region: 'maghreb',
-    mosqueAr: 'مسجد حسان ومسجد السنة - الرباط (مخزن بالجهاز)',
-    mosqueEn: 'Hassan & As-Sunnah Mosque, Rabat (Offline Ready)',
+    mosqueAr: 'مسجد حسان ومسجد السنة - الرباط',
+    mosqueEn: 'Hassan & As-Sunnah Mosque, Rabat',
     maqamAr: 'الطبع المغربي الأندلسي الأصيل',
     takbeerStyleAr: 'صيغة المذهب المالكي (تثنية التكبير وترجيع الشهادتين)',
     baseFreq: 293.66,
@@ -961,14 +642,14 @@ export const MUEZZIN_PROFILES: MuezzinProfile[] = [
   },
   {
     id: 'morocco_fes_qarawiyyin',
-    nameAr: 'الأذان الثاني (بدون إنترنت): أذان جامع القرويين والكتبية — فاس ومراكش',
-    nameEn: 'Offline Adhan 2: Al-Qarawiyyin & Koutoubia (Morocco)',
+    nameAr: 'الأذان المغربي الأصيل — جامع القرويين والكتبية',
+    nameEn: 'Moroccan Heritage Adhan — Al-Qarawiyyin & Koutoubia',
     countryAr: 'المغرب',
     countryEn: 'Morocco',
     region: 'maghreb',
-    mosqueAr: 'جامع القرويين بفاس وجامع الكتبية بمراكش (مخزن بالجهاز)',
-    mosqueEn: 'Al-Qarawiyyin & Koutoubia Mosques (Offline Ready)',
-    maqamAr: 'طبع الأصبهان والحجاز المغاربي',
+    mosqueAr: 'جامع القرويين بفاس وجامع الكتبية بمراكش',
+    mosqueEn: 'Al-Qarawiyyin (Fes) & Koutoubia (Marrakech)',
+    maqamAr: 'طبع الأصبهان والاستهلال المغربي',
     takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
     baseFreq: 277.18,
     audioStreamUrl: '/audio/adhan-2.mp3',
@@ -977,14 +658,14 @@ export const MUEZZIN_PROFILES: MuezzinProfile[] = [
   },
   {
     id: 'makkah_haram',
-    nameAr: 'الأذان الثالث (بدون إنترنت): أذان المسجد الحرام — مكة المكرمة',
-    nameEn: 'Offline Adhan 3: Masjid Al-Haram (Makkah)',
-    countryAr: 'السعودية',
-    countryEn: 'Saudi Arabia',
+    nameAr: 'أذان المسجد الحرام — مكة المكرمة',
+    nameEn: 'Masjid Al-Haram Adhan — Makkah',
+    countryAr: 'الحرم المكي',
+    countryEn: 'Makkah',
     region: 'haramain_gulf',
-    mosqueAr: 'المسجد الحرام بمكة المكرمة (مخزن بالجهاز)',
-    mosqueEn: 'Masjid Al-Haram, Makkah (Offline Ready)',
-    maqamAr: 'مقام الحجاز المكي الأصيل',
+    mosqueAr: 'المسجد الحرام بمكة المكرمة',
+    mosqueEn: 'Masjid Al-Haram, Makkah',
+    maqamAr: 'الأداء الحجازي المكي الخاشع',
     takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
     baseFreq: 293.66,
     audioStreamUrl: '/audio/adhan-3.mp3',
@@ -993,14 +674,14 @@ export const MUEZZIN_PROFILES: MuezzinProfile[] = [
   },
   {
     id: 'madinah_haram',
-    nameAr: 'الأذان الرابع (بدون إنترنت): أذان المسجد النبوي الشريف — المدينة المنورة',
-    nameEn: 'Offline Adhan 4: Al-Masjid An-Nabawi (Madinah)',
-    countryAr: 'السعودية',
-    countryEn: 'Saudi Arabia',
+    nameAr: 'أذان المسجد النبوي الشريف — المدينة المنورة',
+    nameEn: 'Al-Masjid An-Nabawi Adhan — Madinah',
+    countryAr: 'الحرم النبوي',
+    countryEn: 'Madinah',
     region: 'haramain_gulf',
-    mosqueAr: 'المسجد النبوي الشريف بالمدينة (مخزن بالجهاز)',
-    mosqueEn: 'Al-Masjid An-Nabawi, Madinah (Offline Ready)',
-    maqamAr: 'مقام البياتي المدني الخاشع',
+    mosqueAr: 'المسجد النبوي الشريف بالمدينة المنورة',
+    mosqueEn: 'Al-Masjid An-Nabawi, Madinah',
+    maqamAr: 'الأداء المدني الخاشع',
     takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
     baseFreq: 329.63,
     audioStreamUrl: '/audio/adhan-4.mp3',
@@ -1009,216 +690,19 @@ export const MUEZZIN_PROFILES: MuezzinProfile[] = [
   },
   {
     id: 'alquds_aqsa',
-    nameAr: 'الأذان الخامس (بدون إنترنت): أذان المسجد الأقصى والجامع الأزهر',
-    nameEn: 'Offline Adhan 5: Al-Aqsa & Al-Azhar Mosque Adhan',
-    countryAr: 'فلسطين / مصر',
-    countryEn: 'Palestine / Egypt',
+    nameAr: 'أذان المسجد الأقصى المبارك — القدس الشريف',
+    nameEn: 'Al-Aqsa Mosque Adhan — Al-Quds',
+    countryAr: 'القدس الشريف',
+    countryEn: 'Al-Quds',
     region: 'egypt_levant',
-    mosqueAr: 'المسجد الأقصى المبارك والجامع الأزهر (مخزن بالجهاز)',
-    mosqueEn: 'Al-Aqsa & Al-Azhar Mosques (Offline Ready)',
-    maqamAr: 'المقام المقدسي والراست المصري',
+    mosqueAr: 'المسجد الأقصى المبارك بالقدس الشريف',
+    mosqueEn: 'Al-Aqsa Mosque, Jerusalem',
+    maqamAr: 'الأداء المقدسي الأصيل',
     takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
     baseFreq: 311.13,
     audioStreamUrl: '/audio/adhan-5.mp3',
     offlineSlot: 5,
     isCoreOffline: true,
-  },
-
-  // === باقي أصوات الدول المغاربية والإسلامية (مرتبطة بالملفات الصوتية المحلية وتعمل بدون إنترنت) ===
-  {
-    id: 'morocco_hassan_ii',
-    nameAr: 'أذان مسجد الحسن الثاني الكبير',
-    nameEn: 'Hassan II Grand Mosque Adhan',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    mosqueAr: 'مسجد الحسن الثاني - الدار البيضاء',
-    mosqueEn: 'Hassan II Mosque, Casablanca',
-    maqamAr: 'مقام الاستهلال المغربي الخاشع',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 311.13,
-    audioStreamUrl: '/audio/adhan-1.mp3',
-    offlineSlot: 1,
-  },
-  {
-    id: 'morocco_marrakech_koutoubia',
-    nameAr: 'أذان جامع الكتبية بمراكش',
-    nameEn: 'Koutoubia Mosque Adhan (Marrakech)',
-    countryAr: 'المغرب',
-    countryEn: 'Morocco',
-    region: 'maghreb',
-    mosqueAr: 'جامع الكتبية - مراكش',
-    mosqueEn: 'Koutoubia Mosque, Marrakech',
-    maqamAr: 'الطبع المراكشي المغربي',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 329.63,
-    audioStreamUrl: '/audio/adhan-2.mp3',
-    offlineSlot: 2,
-  },
-  {
-    id: 'algeria_algiers',
-    nameAr: 'الأذان الجزائري المغاربي الأصيل',
-    nameEn: 'Great Mosque of Algiers Adhan',
-    countryAr: 'الجزائر',
-    countryEn: 'Algeria',
-    region: 'maghreb',
-    mosqueAr: 'الجامع الأعظم - الجزائر العاصمة',
-    mosqueEn: 'Djamaa el Djazair, Algiers',
-    maqamAr: 'مقام الزيدان والحجاز الجزائري',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 293.66,
-    audioStreamUrl: '/audio/adhan-2.mp3',
-    offlineSlot: 2,
-  },
-  {
-    id: 'tunisia_zitouna',
-    nameAr: 'أذان جامع الزيتونة المعمور',
-    nameEn: 'Ez-Zitouna Mosque Adhan (Tunis)',
-    countryAr: 'تونس',
-    countryEn: 'Tunisia',
-    region: 'maghreb',
-    mosqueAr: 'جامع الزيتونة - تونس العاصمة',
-    mosqueEn: 'Ez-Zitouna Grand Mosque, Tunis',
-    maqamAr: 'طبع الحسين والبياتي التونسي',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 349.23,
-    audioStreamUrl: '/audio/adhan-1.mp3',
-    offlineSlot: 1,
-  },
-  {
-    id: 'libya_tripoli',
-    nameAr: 'الأذان الليبي الطرابلسي',
-    nameEn: 'Tripoli Grand Mosque Adhan (Libya)',
-    countryAr: 'ليبيا',
-    countryEn: 'Libya',
-    region: 'maghreb',
-    mosqueAr: 'جامع قرجي والناقة - طرابلس',
-    mosqueEn: 'Gurgi Mosque, Tripoli',
-    maqamAr: 'الأداء المغاربي الليبي',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 311.13,
-    audioStreamUrl: '/audio/adhan-2.mp3',
-    offlineSlot: 2,
-  },
-  {
-    id: 'mauritania_chinguetti',
-    nameAr: 'الأذان الشنقيطي الموريتاني',
-    nameEn: 'Chinguetti & Nouakchott Adhan (Mauritania)',
-    countryAr: 'موريتانيا',
-    countryEn: 'Mauritania',
-    region: 'maghreb',
-    mosqueAr: 'المسجد الجامع بنواكشوط وشنقيط',
-    mosqueEn: 'Grand Mosque of Nouakchott',
-    maqamAr: 'مقام التيدنيت الشنقيطي الخاشع',
-    takbeerStyleAr: 'صيغة المذهب المالكي المغاربي',
-    baseFreq: 261.63,
-    audioStreamUrl: '/audio/adhan-1.mp3',
-    offlineSlot: 1,
-  },
-  {
-    id: 'alafasy',
-    nameAr: 'الشيخ مشاري راشد العفاسي',
-    nameEn: 'Sheikh Mishary Rashid Alafasy',
-    countryAr: 'الكويت',
-    countryEn: 'Kuwait',
-    region: 'haramain_gulf',
-    mosqueAr: 'المسجد الكبير - الكويت',
-    mosqueEn: 'Grand Mosque, Kuwait',
-    maqamAr: 'مقام النهاوند الخاشع',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 261.63,
-    audioStreamUrl: '/audio/adhan-3.mp3',
-    offlineSlot: 3,
-  },
-  {
-    id: 'uae_zayed',
-    nameAr: 'أذان جامع الشيخ زايد الكبير',
-    nameEn: 'Sheikh Zayed Grand Mosque Adhan',
-    countryAr: 'الإمارات',
-    countryEn: 'UAE',
-    region: 'haramain_gulf',
-    mosqueAr: 'جامع الشيخ زايد - أبوظبي',
-    mosqueEn: 'Sheikh Zayed Mosque, Abu Dhabi',
-    maqamAr: 'مقام الصبا والبياتي الخليجي',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 293.66,
-    audioStreamUrl: '/audio/adhan-4.mp3',
-    offlineSlot: 4,
-  },
-  {
-    id: 'abdulbasit',
-    nameAr: 'الشيخ عبد الباسط عبد الصمد',
-    nameEn: 'Sheikh Abdulbasit Abdulsamad',
-    countryAr: 'مصر',
-    countryEn: 'Egypt',
-    region: 'egypt_levant',
-    mosqueAr: 'مسجد الإمام الشافعي - القاهرة',
-    mosqueEn: 'Imam Shafi Mosque, Cairo',
-    maqamAr: 'مقام الراست والبياتي المصري',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 349.23,
-    audioStreamUrl: '/audio/adhan-5.mp3',
-    offlineSlot: 5,
-  },
-  {
-    id: 'damascus_umayyad',
-    nameAr: 'الأذان الدمشقي الجماعي (الجامع الأموي)',
-    nameEn: 'Umayyad Mosque Choral Adhan (Damascus)',
-    countryAr: 'سوريا',
-    countryEn: 'Syria',
-    region: 'egypt_levant',
-    mosqueAr: 'الجامع الأموي الكبير - دمشق',
-    mosqueEn: 'Umayyad Mosque, Damascus',
-    maqamAr: 'جوق المؤذنين بالجامع الأموي',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 277.18,
-    audioStreamUrl: '/audio/adhan-4.mp3',
-    offlineSlot: 4,
-  },
-  {
-    id: 'istanbul_ayasofya',
-    nameAr: 'أذان مسجد آيا صوفيا والسلطان أحمد',
-    nameEn: 'Hagia Sophia & Blue Mosque Adhan',
-    countryAr: 'تركيا',
-    countryEn: 'Turkey',
-    region: 'islamic_world',
-    mosqueAr: 'مسجد آيا صوفيا الكبير - إسطنبول',
-    mosqueEn: 'Hagia Sophia Grand Mosque, Istanbul',
-    maqamAr: 'مقام الصبا والحجاز العثماني',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 329.63,
-    audioStreamUrl: '/audio/adhan-3.mp3',
-    offlineSlot: 3,
-  },
-  {
-    id: 'malaysia_putra',
-    nameAr: 'أذان المسجد الوطني بماليزيا',
-    nameEn: 'Putra Mosque Adhan (Malaysia)',
-    countryAr: 'ماليزيا',
-    countryEn: 'Malaysia',
-    region: 'islamic_world',
-    mosqueAr: 'مسجد بوترا - كوالالمبور',
-    mosqueEn: 'Putra Mosque, Kuala Lumpur',
-    maqamAr: 'مقام النهاوند الآسيوي الهادئ',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 261.63,
-    audioStreamUrl: '/audio/adhan-4.mp3',
-    offlineSlot: 4,
-  },
-  {
-    id: 'indonesia_istiqlal',
-    nameAr: 'أذان مسجد الاستقلال بجاكرتا',
-    nameEn: 'Istiqlal Grand Mosque Adhan (Indonesia)',
-    countryAr: 'إندونيسيا',
-    countryEn: 'Indonesia',
-    region: 'islamic_world',
-    mosqueAr: 'مسجد الاستقلال الكبير - جاكرتا',
-    mosqueEn: 'Istiqlal Mosque, Jakarta',
-    maqamAr: 'مقام البياتي الجاوي الخاشع',
-    takbeerStyleAr: 'صيغة الجمهور (تربيع التكبير)',
-    baseFreq: 293.66,
-    audioStreamUrl: '/audio/adhan-5.mp3',
-    offlineSlot: 5,
   },
 ]
 
@@ -1237,14 +721,14 @@ export interface FiqhTopic {
 export const FIQH_TOPICS: FiqhTopic[] = [
   {
     id: 'maliki_adhan',
-    categoryAr: 'فقه الأذان المغاربي',
-    categoryEn: 'Maghrebi & Maliki Adhan Fiqh',
-    titleAr: 'صفة الأذان في المذهب المالكي والغرب الإسلامي',
-    titleEn: 'Maliki Adhan Formula in Morocco & Maghreb',
+    categoryAr: 'فقه الأذان المغربي',
+    categoryEn: 'Moroccan Maliki Adhan Fiqh',
+    titleAr: 'صفة الأذان في المذهب المالكي بالمغرب',
+    titleEn: 'Maliki Adhan Formula in Morocco',
     summaryAr:
-      'الخصائص الفقهية للأذان المغاربي المعتمد لدى وزارة الأوقاف والشؤون الإسلامية بالمغرب وسائر بلاد المغرب العربي.',
+      'الخصائص الفقهية للأذان المغربي المعتمد لدى وزارة الأوقاف والشؤون الإسلامية بالمملكة المغربية.',
     summaryEn:
-      'Authentic Maliki jurisprudence of Adhan practiced across Morocco, Algeria, Tunisia, Libya, and Mauritania.',
+      'Authentic Maliki jurisprudence of Adhan practiced across the Kingdom of Morocco.',
     detailsAr: [
       'تثنية التكبير في أول الأذان (الله أكبر، الله أكبر — مرتين) عملاً بعمل أهل المدينة المنورة الذي نقله الإمام مالك رحمه الله',
       'الترجيع في الشهادتين: النطق بالشهادتين سراً بصوت منخفض ثم إعادتهما جهراً بصوت مرتفع',
@@ -1267,11 +751,11 @@ export const FIQH_TOPICS: FiqhTopic[] = [
       'الإسلام والعقل والتمييز',
       'رفع الحدث الأصغر بالوضوء والأكبر بالاغتسال',
       'إزالة النجاسة عن البدن والثوب والمكان',
-      'ستر العورة ودخول الوقت الشرعي المحدد فلكياً أو عبر تقويم وزارة الأوقاف',
+      'ستر العورة ودخول الوقت الشرعي المحدد عبر تقويم وزارة الأوقاف',
       'استقبال القبلة والنية بالقلب دون التلفظ بها',
     ],
     evidenceAr:
-      'قال تعالى: {إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا} [النساء: 103]',
+      'قال تعالى: ﴿ إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا ﴾ [النساء: 103]',
   },
   {
     id: 'arkan',
@@ -1299,7 +783,7 @@ export const FIQH_TOPICS: FiqhTopic[] = [
     titleAr: 'أحكام سجود السهو القبلي والبعدي',
     titleEn: 'Rulings of Sujood As-Sahw (Pre & Post Salam)',
     summaryAr:
-      'كيفية جبر الخلل الواقع في الصلاة بسبب الزيادة أو النقص أو الشك على المذهب المالكي ومذاهب الجمهور.',
+      'كيفية جبر الخلل الواقع في الصلاة بسبب الزيادة أو النقص أو الشك على المذهب المالكي.',
     summaryEn:
       'How to remedy unintended additions, omissions, or doubts during prayer.',
     detailsAr: [
@@ -1326,6 +810,6 @@ export const FIQH_TOPICS: FiqhTopic[] = [
       'الفجر والمغرب لا يدخلهما القصر ويبقيان على عدد ركعاتهما',
     ],
     evidenceAr:
-      'قال تعالى: {وَإِذَا ضَرَبْتُمْ فِي الْأَرْضِ فَلَيْسَ عَلَيْكُمْ جُنَاحٌ أَن تَقْصُرُوا مِنَ الصَّلَاةِ} [النساء: 101]',
+      'قال تعالى: ﴿ وَإِذَا ضَرَبْتُمْ فِي الْأَرْضِ فَلَيْسَ عَلَيْكُمْ جُنَاحٌ أَن تَقْصُرُوا مِنَ الصَّلَاةِ ﴾ [النساء: 101]',
   },
 ]
