@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import {
   Trophy,
   Clock,
@@ -8,12 +8,6 @@ import {
   Sparkles,
   CheckCircle2,
   XCircle,
-  BookOpen,
-  Compass,
-  Shield,
-  Users,
-  Heart,
-  ScrollText,
   Award,
   Flame,
   ArrowRight,
@@ -69,43 +63,188 @@ const DEFAULT_STATS: UserQuizStats = {
   seenIds: {},
 }
 
+/**
+ * Custom Bespoke Islamic SVG Emblem for each of the 6 Axes
+ */
+function CategoryAxisEmblem({ categoryId }: { categoryId: string }) {
+  switch (categoryId) {
+    case 'quran-stories':
+      // Open Illuminated Mushaf with Radiant Star & Crescent
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M8 16C13.5 13.5 19.5 14.2 24 17.5C28.5 14.2 34.5 13.5 40 16V36C34.5 33.8 28.5 34.2 24 37.5C19.5 34.2 13.5 33.8 8 36V16Z"
+            fill="currentColor"
+            fillOpacity="0.16"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path d="M24 17.5V37.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M13 22H19M13 26.5H18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M29 22H35M30 26.5H35" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          <circle cx="24" cy="10" r="2.5" fill="currentColor" />
+          <path d="M24 5V6.5M19 8.5L20.2 9.5M29 8.5L27.8 9.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      )
+
+    case 'seerah':
+      // Al-Masjid An-Nabawi Green Dome & Minaret Emblem
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M12 38V29C12 21.5 17.5 16 24 13C30.5 16 36 21.5 36 29V38H12Z"
+            fill="currentColor"
+            fillOpacity="0.18"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinejoin="round"
+          />
+          <path d="M24 7V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <circle cx="24" cy="6.5" r="1.8" fill="currentColor" />
+          <path d="M8 38H40" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+          <path d="M20 38V31C20 28.8 21.8 27 24 27C26.2 27 28 28.8 28 31V38" stroke="currentColor" strokeWidth="1.8" />
+          <path d="M39 38V17L37 14L35 17V38" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        </svg>
+      )
+
+    case 'sahaba':
+      // Companions' Banner of Faith, Shield & Radiant Stars
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M24 9L36 14V24.5C36 32 30.8 37.8 24 40C17.2 37.8 12 32 12 24.5V14L24 9Z"
+            fill="currentColor"
+            fillOpacity="0.16"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M24 16L26.1 20.4L31 21.1L27.5 24.5L28.3 29.3L24 27L19.7 29.3L20.5 24.5L17 21.1L21.9 20.4L24 16Z"
+            fill="currentColor"
+            fillOpacity="0.35"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinejoin="round"
+          />
+        </svg>
+      )
+
+    case 'ghazawat':
+      // Crossed Islamic Scimitars & Emblem of Victory
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M11 36L35 12M35 12H29M35 12V18"
+            stroke="currentColor"
+            strokeWidth="2.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M37 36L13 12M13 12H19M13 12V18"
+            stroke="currentColor"
+            strokeWidth="2.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle
+            cx="24"
+            cy="24"
+            r="7"
+            fill="currentColor"
+            fillOpacity="0.2"
+            stroke="currentColor"
+            strokeWidth="2"
+          />
+          <path d="M9 38L14 33M39 38L34 33" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+        </svg>
+      )
+
+    case 'women-of-prophethood':
+      // Crown of Dignity & Andalusian Pearl Flower
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M10 34L13 18L20 25L24 14L28 25L35 18L38 34H10Z"
+            fill="currentColor"
+            fillOpacity="0.18"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinejoin="round"
+          />
+          <path d="M10 38H38" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+          <circle cx="24" cy="11" r="2" fill="currentColor" />
+          <circle cx="13" cy="15" r="1.6" fill="currentColor" />
+          <circle cx="35" cy="15" r="1.6" fill="currentColor" />
+        </svg>
+      )
+
+    case 'hadith':
+    default:
+      // Prophetic Scroll & Golden Inkwell of Sunnah
+      return (
+        <svg viewBox="0 0 48 48" fill="none" className="w-8 h-8">
+          <path
+            d="M14 12C14 10.3 15.3 9 17 9H33C34.7 9 36 10.3 36 12V35C36 37.2 34.2 39 32 39H15C12.8 39 11 37.2 11 35V32H14V12Z"
+            fill="currentColor"
+            fillOpacity="0.16"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinejoin="round"
+          />
+          <path d="M19 17H31M19 23H31M19 29H26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+      )
+  }
+}
+
 const CATEGORY_META: Record<
   string,
   {
-    icon: typeof BookOpen
     badge: string
     accentClass: string
+    iconColorClass: string
+    subAxes: string[]
   }
 > = {
   'quran-stories': {
-    icon: BookOpen,
-    badge: '200 سؤال قرآني',
-    accentClass: 'from-emerald-600/20 to-teal-700/10 border-emerald-500/30',
+    badge: 'محور الوحي والقصص',
+    accentClass: 'from-emerald-600/20 via-emerald-900/10 to-teal-900/10 border-emerald-500/35',
+    iconColorClass: 'text-emerald-400 border-emerald-500/40 bg-emerald-500/10',
+    subAxes: ['أنبياء الله ورسله', 'قصص الصالحين', 'الأمثال القرآنية', 'آيات المعجزات'],
   },
   seerah: {
-    icon: Compass,
-    badge: '200 سؤال في السيرة',
-    accentClass: 'from-amber-500/20 to-yellow-700/10 border-amber-500/30',
+    badge: 'محور العهد المكي والمدني',
+    accentClass: 'from-amber-500/20 via-amber-900/10 to-yellow-900/10 border-amber-500/35',
+    iconColorClass: 'text-amber-400 border-amber-500/40 bg-amber-500/10',
+    subAxes: ['المولد والنشأة', 'البعثة والوحي', 'الهجرة النبوية', 'الشمائل المحمدية'],
   },
   sahaba: {
-    icon: Users,
-    badge: '200 سؤال في الصحابة',
-    accentClass: 'from-sky-500/20 to-blue-700/10 border-sky-500/30',
+    badge: 'محور الجيل الفريد',
+    accentClass: 'from-sky-500/20 via-sky-900/10 to-blue-900/10 border-sky-500/35',
+    iconColorClass: 'text-sky-400 border-sky-500/40 bg-sky-500/10',
+    subAxes: ['الخلفاء الراشدون', 'العشرة المبشرون', 'أعلام المهاجرين', 'فرسان الأنصار'],
   },
   ghazawat: {
-    icon: Shield,
-    badge: '200 سؤال في الغزوات',
-    accentClass: 'from-rose-500/20 to-red-700/10 border-rose-500/30',
+    badge: 'محور أيام الفرقان',
+    accentClass: 'from-rose-500/20 via-rose-900/10 to-red-900/10 border-rose-500/35',
+    iconColorClass: 'text-rose-400 border-rose-500/40 bg-rose-500/10',
+    subAxes: ['بدر وأحد والخندق', 'صلح الحديبية وخيبر', 'فتح مكة وحنين', 'السرايا والرايات'],
   },
   'women-of-prophethood': {
-    icon: Heart,
-    badge: '200 سؤال في سيدات النبوة',
-    accentClass: 'from-purple-500/20 to-fuchsia-700/10 border-purple-500/30',
+    badge: 'محور البيت النبوي',
+    accentClass: 'from-purple-500/20 via-purple-900/10 to-fuchsia-900/10 border-purple-500/35',
+    iconColorClass: 'text-purple-400 border-purple-500/40 bg-purple-500/10',
+    subAxes: ['أمهات المؤمنين', 'بنات النبي الكريم', 'رائدات الهجرة', 'راويات الحديث'],
   },
   hadith: {
-    icon: ScrollText,
-    badge: '200 سؤال في الحديث',
-    accentClass: 'from-teal-500/20 to-emerald-700/10 border-teal-500/30',
+    badge: 'محور جوامع الكلم',
+    accentClass: 'from-teal-500/20 via-teal-900/10 to-emerald-900/10 border-teal-500/35',
+    iconColorClass: 'text-teal-400 border-teal-500/40 bg-teal-500/10',
+    subAxes: ['الأربعون النووية', 'آداب الإسلام والأخلاق', 'فضائل الأعمال', 'رياض الصالحين'],
   },
 }
 
@@ -176,9 +315,8 @@ export function UnsurNabiyakQuiz() {
   const [stats, setStats] = useState<UserQuizStats>(DEFAULT_STATS)
   const [soundEnabled, setSoundEnabled] = useState(true)
 
-  // Game settings & session state
+  // Game settings & session state (hidden count, smooth continuous rounds)
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
-  const [questionsPerRound, setQuestionsPerRound] = useState<number>(10)
   const [secondsPerQuestion, setSecondsPerQuestion] = useState<number>(25)
 
   const [roundQuestions, setRoundQuestions] = useState<QuizQuestion[]>([])
@@ -195,7 +333,6 @@ export function UnsurNabiyakQuiz() {
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  // Load offline dataset & saved stats
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
@@ -229,12 +366,12 @@ export function UnsurNabiyakQuiz() {
     })
   }, [])
 
-  // Build a fresh randomized round of questions that prioritizes unseen questions
-  // and reshuffles options every time the user restarts or exits!
+  // Build a fresh randomized round of questions without exposing any counts
   const startNewRound = useCallback(
-    (categoryId: string, count = questionsPerRound, timerSec = secondsPerQuestion) => {
+    (categoryId: string, timerSec = secondsPerQuestion) => {
       if (!dataset) return
 
+      const sessionSize = 15
       let pool: QuizQuestion[] = []
       if (categoryId === 'all-mixed') {
         dataset.categories.forEach(c => {
@@ -250,9 +387,8 @@ export function UnsurNabiyakQuiz() {
       const seenSet = new Set(seenList)
 
       let unseen = pool.filter(q => !seenSet.has(q.id))
-      // If unseen is less than needed, reset seen history for this category so all 200 cycle freshly
       let resetHistory = false
-      if (unseen.length < count) {
+      if (unseen.length < sessionSize) {
         unseen = [...pool]
         resetHistory = true
       }
@@ -264,8 +400,7 @@ export function UnsurNabiyakQuiz() {
         ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
       }
 
-      // Also randomize option order inside each selected question so choices change every time
-      const picked = shuffled.slice(0, count).map(q => {
+      const picked = shuffled.slice(0, sessionSize).map(q => {
         const correctText = q.options[q.correctIndex]
         const opts = [...q.options]
         for (let i = opts.length - 1; i > 0; i--) {
@@ -279,7 +414,6 @@ export function UnsurNabiyakQuiz() {
         }
       })
 
-      // Record newly picked IDs into seenIds so exiting or restarting immediately gives new questions
       const newIds = picked.map(q => q.id)
       saveStats(prev => ({
         ...prev,
@@ -302,10 +436,9 @@ export function UnsurNabiyakQuiz() {
       setFiftyFiftyUsed(false)
       setHiddenOptions([])
     },
-    [dataset, questionsPerRound, secondsPerQuestion, stats.seenIds, saveStats]
+    [dataset, secondsPerQuestion, stats.seenIds, saveStats]
   )
 
-  // Countdown timer effect
   useEffect(() => {
     if (!selectedCategoryId || roundFinished || isAnswered || roundQuestions.length === 0) {
       if (timerRef.current) clearInterval(timerRef.current)
@@ -315,7 +448,6 @@ export function UnsurNabiyakQuiz() {
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          // Time expired -> mark as unanswered/wrong
           clearInterval(timerRef.current!)
           setIsAnswered(true)
           setSelectedOption(-1)
@@ -417,7 +549,6 @@ export function UnsurNabiyakQuiz() {
     const currentQ = roundQuestions[currentIndex]
     if (!currentQ) return
     const wrongIndices = [0, 1, 2, 3].filter(idx => idx !== currentQ.correctIndex)
-    // Shuffle and hide 2 wrong options
     const toHide = wrongIndices.sort(() => Math.random() - 0.5).slice(0, 2)
     setHiddenOptions(toHide)
     setFiftyFiftyUsed(true)
@@ -436,7 +567,7 @@ export function UnsurNabiyakQuiz() {
     return (
       <div className="luxury-card rounded-2xl p-8 text-center">
         <div className="w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto mb-4" />
-        <p className="text-base font-bold text-foreground">جاري تحميل موسوعة «انصر نبيك» (1200 سؤال بدون إنترنت)...</p>
+        <p className="text-base font-bold text-foreground">جاري فتح محاور مسابقة «انصر نبيك»...</p>
       </div>
     )
   }
@@ -445,9 +576,9 @@ export function UnsurNabiyakQuiz() {
     selectedCategoryId === 'all-mixed'
       ? {
           id: 'all-mixed',
-          title: 'التحدي الشامل (جميع الأقسام)',
-          subtitle: 'أسئلة متنوعة من الأقسام الستة (1200 سؤال)',
-          totalQuestions: 1200,
+          title: 'المسابقة الشاملة (جميع المحاور)',
+          subtitle: 'أسئلة متجددة من جميع المحاور النبوية والقرآنية',
+          totalQuestions: 0,
           questions: [],
         }
       : dataset?.categories.find(c => c.id === selectedCategoryId)
@@ -456,39 +587,42 @@ export function UnsurNabiyakQuiz() {
 
   return (
     <div className="space-y-6">
-      {/* Top Header Banner */}
+      {/* Top Header Banner (Clean, No Question Counts, Deleted Subtitle as requested) */}
       <div className="luxury-card rounded-2xl p-5 sm:p-6 border border-primary/30 relative overflow-hidden">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1.5">
+        <div className="pointer-events-none absolute -left-16 -top-16 h-44 w-44 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="pointer-events-none absolute -right-16 -bottom-16 h-44 w-44 rounded-full bg-emerald-500/10 blur-3xl" />
+
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-2">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 border border-primary/30 text-primary text-xs font-bold">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>تعمل 100% بدون إنترنت • 1,200 سؤال موثق</span>
+              <span>تعمل بدون إنترنت • محاور معرفية متجددة تلقائياً</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold font-serif text-foreground flex items-center gap-2.5">
               <span>مسابقة «انصر نبيك صلى الله عليه وسلم» الكبرى</span>
             </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              تعلّم سيرة حبيبك المصطفى صلى الله عليه وسلم وقصص القرآن والصحابة والغزوات وسيدات النبوة والحديث الشريف عبر 200 سؤال متجدد لكل قسم تتغير تلقائياً عند كل جولة أو إعادة.
-            </p>
           </div>
 
           {/* User Cumulative Score & Rank Card */}
-          <div className="flex items-center gap-3 bg-secondary/70 border border-border rounded-2xl p-3.5 shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary">
+          <div className="flex items-center gap-3.5 bg-secondary/70 border border-border rounded-2xl p-3.5 shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-inner">
               <Trophy className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">مجموع نقاطك:</span>
+                <span className="text-xs text-muted-foreground">رصيد نقاطك:</span>
                 <span className="text-lg font-bold tabular-nums text-primary">{stats.totalPoints} نقطة</span>
               </div>
               <div className="text-xs font-bold text-foreground flex items-center gap-1.5 mt-0.5">
-                <Award className="w-3.5 h-3.5 text-accent" />
+                <Award className="w-3.5 h-3.5 text-amber-400" />
                 <span>الرتبة: {rank.title}</span>
               </div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">
-                إجابات صحيحة: {stats.totalCorrect} من {stats.totalAnswered} • أعلى سلسلة: {stats.bestStreak}
-              </div>
+              {stats.bestStreak > 0 && (
+                <div className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
+                  <Flame className="w-3 h-3 text-amber-500" />
+                  <span>أعلى سلسلة تفوق: {stats.bestStreak}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -497,45 +631,27 @@ export function UnsurNabiyakQuiz() {
       {/* Category Selection Screen */}
       {!selectedCategoryId && (
         <div className="space-y-6">
-          {/* Round Settings Bar */}
+          {/* Timer & Audio Control Bar (No question count selector) */}
           <div className="luxury-card rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-muted-foreground">عدد أسئلة الجولة:</span>
-                <div className="flex items-center gap-1 bg-secondary rounded-xl p-1 border border-border">
-                  {[10, 20, 50].map(num => (
-                    <button
-                      key={num}
-                      onClick={() => setQuestionsPerRound(num)}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                        questionsPerRound === num
-                          ? 'bg-primary text-primary-foreground shadow-sm'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {num} سؤالاً
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-muted-foreground">مؤقت السؤال:</span>
-                <div className="flex items-center gap-1 bg-secondary rounded-xl p-1 border border-border">
-                  {[15, 25, 40].map(sec => (
-                    <button
-                      key={sec}
-                      onClick={() => setSecondsPerQuestion(sec)}
-                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
-                        secondsPerQuestion === sec
-                          ? 'bg-primary text-primary-foreground shadow-sm'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {sec} ثانية
-                    </button>
-                  ))}
-                </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs font-bold text-muted-foreground flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-primary" />
+                <span>مهلة التفكير لكل سؤال:</span>
+              </span>
+              <div className="flex items-center gap-1 bg-secondary rounded-xl p-1 border border-border">
+                {[15, 25, 40].map(sec => (
+                  <button
+                    key={sec}
+                    onClick={() => setSecondsPerQuestion(sec)}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                      secondsPerQuestion === sec
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    {sec} ثانية
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -550,59 +666,69 @@ export function UnsurNabiyakQuiz() {
 
               <button
                 onClick={() => startNewRound('all-mixed')}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-bold shadow-md hover:opacity-95 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-primary to-emerald-700 text-primary-foreground text-xs font-bold shadow-md hover:opacity-95 transition-all"
               >
                 <Shuffle className="w-4 h-4" />
-                <span>تحدي شامل عشوائي (1200 سؤال)</span>
+                <span>تحدي شامل لجميع المحاور</span>
               </button>
             </div>
           </div>
 
-          {/* 6 Categories Grid */}
+          {/* 6 Axes Grid with Custom Bespoke Icons & Sub-Axes */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {dataset?.categories.map(cat => {
               const meta = CATEGORY_META[cat.id] || CATEGORY_META['quran-stories']
-              const Icon = meta.icon
               const catStat = stats.categoryScores[cat.id] || { answered: 0, correct: 0, points: 0 }
-              const seenCount = (stats.seenIds[cat.id] || []).length
 
               return (
                 <div
                   key={cat.id}
-                  className={`luxury-card rounded-2xl p-5 border transition-all hover:scale-[1.01] hover:border-primary/50 flex flex-col justify-between bg-gradient-to-br ${meta.accentClass}`}
+                  className={`luxury-card rounded-2xl p-5 border transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-lg flex flex-col justify-between bg-gradient-to-br ${meta.accentClass}`}
                 >
                   <div>
-                    <div className="flex items-start justify-between gap-3 mb-3">
-                      <div className="w-12 h-12 rounded-2xl bg-card/90 border border-border flex items-center justify-center text-primary shadow-sm">
-                        <Icon className="w-6 h-6" />
+                    <div className="flex items-start justify-between gap-3 mb-3.5">
+                      {/* Custom Axis SVG Emblem */}
+                      <div
+                        className={`w-14 h-14 rounded-2xl border flex items-center justify-center shadow-sm ${meta.iconColorClass}`}
+                      >
+                        <CategoryAxisEmblem categoryId={cat.id} />
                       </div>
-                      <span className="px-2.5 py-1 rounded-full bg-card/90 border border-border text-[11px] font-bold text-primary">
+
+                      <span className="px-3 py-1 rounded-full bg-card/90 border border-border text-[11px] font-bold text-primary shadow-xs">
                         {meta.badge}
                       </span>
                     </div>
 
-                    <h3 className="text-lg font-bold font-serif text-foreground mb-1">{cat.title}</h3>
+                    <h3 className="text-xl font-bold font-serif text-foreground mb-1.5">{cat.title}</h3>
                     <p className="text-xs text-muted-foreground leading-relaxed mb-4">{cat.subtitle}</p>
+
+                    {/* Sub-axes (محاور فرعية لكل محور) */}
+                    <div className="mb-4">
+                      <div className="text-[11px] font-bold text-foreground/80 mb-2">محاور هذا القسم:</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {meta.subAxes.map((axis, idx) => (
+                          <span
+                            key={idx}
+                            className="px-2.5 py-1 rounded-lg bg-background/70 border border-border/80 text-[11px] font-medium text-foreground/90"
+                          >
+                            • {axis}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
 
                   <div className="space-y-3 pt-3 border-t border-border/60">
-                    <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                      <span>الأسئلة المكتشفة: {Math.min(200, seenCount)} / 200</span>
-                      <span className="font-bold text-primary">{catStat.points} نقطة</span>
-                    </div>
-
-                    <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-primary transition-all duration-500"
-                        style={{ width: `${Math.min(100, (seenCount / 200) * 100)}%` }}
-                      />
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-muted-foreground font-medium">نقاطك في هذا المحور:</span>
+                      <span className="font-bold text-primary tabular-nums">{catStat.points} نقطة</span>
                     </div>
 
                     <button
                       onClick={() => startNewRound(cat.id)}
                       className="w-full py-2.5 px-4 rounded-xl bg-primary text-primary-foreground font-bold text-xs flex items-center justify-center gap-2 shadow-sm hover:opacity-95 transition-all"
                     >
-                      <span>ابدأ جولة جديدة ({questionsPerRound} سؤالاً)</span>
+                      <span>خوض غمار هذا المحور</span>
                       <ArrowRight className="w-4 h-4 rotate-180" />
                     </button>
                   </div>
@@ -616,21 +742,27 @@ export function UnsurNabiyakQuiz() {
       {/* Active Quiz Round Screen */}
       {selectedCategoryId && !roundFinished && currentQuestion && (
         <div className="luxury-card rounded-2xl p-5 sm:p-7 border border-primary/30 space-y-6">
-          {/* Top Bar: Category, Question Counter, Timer, Score, Exit/Restart */}
+          {/* Top Bar: Axis Name, Timer, Score, Exit/Change */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border">
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-3">
               <button
                 onClick={handleExitToCategories}
                 className="px-3 py-1.5 rounded-xl bg-secondary hover:bg-secondary/80 border border-border text-xs font-bold text-foreground flex items-center gap-1.5 transition-all"
               >
                 <ArrowRight className="w-3.5 h-3.5" />
-                <span>الأقسام</span>
+                <span>المحاور</span>
               </button>
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-foreground">{activeCategory?.title}</h3>
-                <p className="text-[11px] text-muted-foreground">
-                  السؤال {currentIndex + 1} من {roundQuestions.length} • مستوى {currentQuestion.difficulty} ({currentQuestion.points} نقطة)
-                </p>
+
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary">
+                  <CategoryAxisEmblem categoryId={selectedCategoryId} />
+                </div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">{activeCategory?.title}</h3>
+                  <p className="text-[11px] text-muted-foreground">
+                    مستوى {currentQuestion.difficulty} • قيمة السؤال: {currentQuestion.points} نقطة
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -664,7 +796,7 @@ export function UnsurNabiyakQuiz() {
               {/* Instant Change / Restart with New Questions */}
               <button
                 onClick={() => startNewRound(selectedCategoryId)}
-                title="تغيير الأسئلة وإعادة الجولة بأسئلة جديدة"
+                title="تغيير الأسئلة وتجديد المحور"
                 className="p-2 rounded-xl bg-secondary hover:bg-primary/15 border border-border text-foreground hover:text-primary transition-all"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -672,10 +804,10 @@ export function UnsurNabiyakQuiz() {
             </div>
           </div>
 
-          {/* Progress Bar */}
+          {/* Smooth Progress Bar */}
           <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
             <div
-              className="h-full bg-primary transition-all duration-300"
+              className="h-full bg-gradient-to-r from-primary to-amber-500 transition-all duration-300"
               style={{ width: `${((currentIndex + 1) / roundQuestions.length) * 100}%` }}
             />
           </div>
@@ -692,7 +824,7 @@ export function UnsurNabiyakQuiz() {
                   className="text-xs font-bold px-3 py-1 rounded-lg bg-accent/15 border border-accent/40 text-accent hover:bg-accent/25 transition-all flex items-center gap-1.5"
                 >
                   <HelpCircle className="w-3.5 h-3.5" />
-                  <span>حذف إجابتين (مرة في الجولة)</span>
+                  <span>حذف إجابتين (مساعدة واحدة)</span>
                 </button>
               )}
             </div>
@@ -782,7 +914,7 @@ export function UnsurNabiyakQuiz() {
                   onClick={handleNextQuestion}
                   className="px-6 py-2.5 rounded-xl bg-primary text-primary-foreground text-xs sm:text-sm font-bold flex items-center gap-2 shadow-md hover:opacity-95 transition-all"
                 >
-                  <span>{currentIndex + 1 >= roundQuestions.length ? 'عرض النتيجة النهائية' : 'السؤال التالي'}</span>
+                  <span>{currentIndex + 1 >= roundQuestions.length ? 'عرض حصيلة النقاط' : 'السؤال التالي'}</span>
                   <ArrowRight className="w-4 h-4 rotate-180" />
                 </button>
               </div>
@@ -791,7 +923,7 @@ export function UnsurNabiyakQuiz() {
         </div>
       )}
 
-      {/* Round Finished Summary Screen */}
+      {/* Round Finished Summary Screen (No question counts exposed) */}
       {selectedCategoryId && roundFinished && (
         <div className="luxury-card rounded-2xl p-6 sm:p-8 border border-primary/30 text-center space-y-6">
           <div className="w-20 h-20 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary mx-auto">
@@ -799,9 +931,9 @@ export function UnsurNabiyakQuiz() {
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold font-serif text-foreground">اكتملت جولة «{activeCategory?.title}»!</h3>
+            <h3 className="text-2xl font-bold font-serif text-foreground">أتممت هذه الجولة في «{activeCategory?.title}»!</h3>
             <p className="text-sm text-muted-foreground">
-              بارك الله في علمك؛ في كل مرة تعيد فيها الجولة أو تخرج وتعود ستظهر لك أسئلة جديدة من بنك الـ 200 سؤال الخاص بالقسم.
+              بارك الله في علمك؛ في كل مرة تعيد فيها الجولة أو تخرج وتعود ستظهر لك أسئلة متجددة ومختلفة تلقائياً.
             </p>
           </div>
 
@@ -811,9 +943,9 @@ export function UnsurNabiyakQuiz() {
               <div className="text-xl font-bold tabular-nums text-primary">+{roundScore}</div>
             </div>
             <div className="p-4 rounded-2xl bg-secondary/70 border border-border">
-              <div className="text-xs text-muted-foreground mb-1">الإجابات الصحيحة</div>
+              <div className="text-xs text-muted-foreground mb-1">الإجابات الموفقة</div>
               <div className="text-xl font-bold tabular-nums text-emerald-500">
-                {roundCorrect} / {roundQuestions.length}
+                {roundCorrect}
               </div>
             </div>
             <div className="p-4 rounded-2xl bg-secondary/70 border border-border">
@@ -828,13 +960,13 @@ export function UnsurNabiyakQuiz() {
               className="px-6 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-bold flex items-center gap-2 shadow-md hover:opacity-95 transition-all"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>جولة جديدة بأسئلة مختلفة</span>
+              <span>جولة جديدة بأسئلة متجددة</span>
             </button>
             <button
               onClick={handleExitToCategories}
               className="px-6 py-3 rounded-xl bg-secondary hover:bg-secondary/80 border border-border text-foreground text-sm font-bold transition-all"
             >
-              اختيار قسم آخر
+              اختيار محور آخر
             </button>
           </div>
         </div>

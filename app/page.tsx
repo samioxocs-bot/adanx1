@@ -45,6 +45,7 @@ import { SettingsPanel } from '@/components/settings-panel'
 import { UnsurNabiyakQuiz } from '@/components/unsur-nabiyak-quiz'
 import { TongueGuardian } from '@/components/tongue-guardian'
 import { PayPalSupportBar } from '@/components/paypal-support-bar'
+import { AppLogo, DailyNoorBanner } from '@/components/app-logo'
 
 type ApiUserResponse = UserDatabaseState & {
   predictiveInsights: PredictiveInsight[]
@@ -478,23 +479,26 @@ export default function Adan2AppPage() {
       {/* 1.5 Slow Scrolling PayPal Support Ticker */}
       <PayPalSupportBar lang={lang} />
 
-      {/* 2. Clean Header Bar (No duplicate buttons) */}
-      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-md">
+      {/* 2. Clean Header Bar with Mishkat Al-Maghrib Brand Identity */}
+      <header className="sticky top-0 z-30 border-b border-amber-500/20 bg-background/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-2.5">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm">
-              <Sparkles className="h-4 w-4" />
-            </div>
+          <div className="flex items-center gap-3">
+            <AppLogo size="md" />
             <div>
-              <h1 className="font-serif text-base font-bold leading-none text-foreground sm:text-lg">
+              <div className="flex items-center gap-2">
+                <h1 className="font-serif text-lg font-bold leading-none text-foreground sm:text-xl">
+                  {isAr
+                    ? 'مِشكاة المغرب'
+                    : 'Mishkat Al-Maghrib'}
+                </h1>
+                <span className="hidden sm:inline-flex items-center rounded-full border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-400">
+                  {isAr ? 'الإصدار الملكي' : 'Royal Edition'}
+                </span>
+              </div>
+              <p className="mt-1 text-[10px] sm:text-[11px] text-muted-foreground">
                 {isAr
-                  ? 'أذان المغرب والقرآن الكريم'
-                  : 'Morocco Adhan & Noble Quran'}
-              </h1>
-              <p className="mt-0.5 text-[10px] text-muted-foreground">
-                {isAr
-                  ? 'مواقيت وزارة الأوقاف المغربية • القرآن والأذكار والمسبحة بدون إنترنت'
-                  : 'Morocco Ministry of Habous • Offline Quran, Adhkar & Tasbih'}
+                  ? 'محراب المواقيت المغربية • القرآن الكريم • انصر نبيك • حارس اللسان'
+                  : 'Moroccan Prayer Mihrab • Noble Quran • Prophet Quiz • Tongue Guardian'}
               </p>
             </div>
           </div>
@@ -549,6 +553,9 @@ export default function Adan2AppPage() {
 
       {/* 3. Main Content Container */}
       <main className="mx-auto w-full max-w-5xl flex-1 space-y-4 px-3 py-3.5 pb-16">
+        {/* Daily Prophetic Illumination & Salawat Counter */}
+        <DailyNoorBanner lang={lang} />
+
         {/* Hero Countdown & Moroccan City Selector */}
         <HeroPrayerCard
           schedule={schedule}
