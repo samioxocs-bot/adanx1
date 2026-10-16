@@ -13,6 +13,8 @@ import {
   CloudSun,
   Compass,
   Settings,
+  Trophy,
+  ShieldAlert,
 } from 'lucide-react'
 import {
   CITY_PRESETS,
@@ -40,6 +42,9 @@ import { ElectronicTasbih } from '@/components/electronic-tasbih'
 import { WeatherSection } from '@/components/weather-section'
 import { QiblaCalendarFiqh } from '@/components/qibla-calendar-fiqh'
 import { SettingsPanel } from '@/components/settings-panel'
+import { UnsurNabiyakQuiz } from '@/components/unsur-nabiyak-quiz'
+import { TongueGuardian } from '@/components/tongue-guardian'
+import { PayPalSupportBar } from '@/components/paypal-support-bar'
 
 type ApiUserResponse = UserDatabaseState & {
   predictiveInsights: PredictiveInsight[]
@@ -49,6 +54,8 @@ type ApiUserResponse = UserDatabaseState & {
 export type AppSectionTab =
   | 'prayers'
   | 'quran'
+  | 'unsur-nabiyak'
+  | 'tongue-guardian'
   | 'adhkar'
   | 'tasbih'
   | 'weather'
@@ -428,6 +435,18 @@ export default function Adan2AppPage() {
   }[] = [
     { id: 'prayers', labelAr: 'المواقيت', labelEn: 'Prayers', icon: Clock },
     { id: 'quran', labelAr: 'القرآن الكريم', labelEn: 'Quran', icon: BookOpen },
+    {
+      id: 'unsur-nabiyak',
+      labelAr: 'انصر نبيك',
+      labelEn: 'Prophet Quiz',
+      icon: Trophy,
+    },
+    {
+      id: 'tongue-guardian',
+      labelAr: 'حارس اللسان',
+      labelEn: 'Tongue Guard',
+      icon: ShieldAlert,
+    },
     { id: 'adhkar', labelAr: 'الأذكار', labelEn: 'Adhkar', icon: Sparkles },
     { id: 'tasbih', labelAr: 'المسبحة', labelEn: 'Tasbih', icon: Hand },
     { id: 'weather', labelAr: 'الطقس', labelEn: 'Weather', icon: CloudSun },
@@ -455,6 +474,9 @@ export default function Adan2AppPage() {
           setTimeout(() => setToastAlert(null), 4500)
         }}
       />
+
+      {/* 1.5 Slow Scrolling PayPal Support Ticker */}
+      <PayPalSupportBar lang={lang} />
 
       {/* 2. Clean Header Bar (No duplicate buttons) */}
       <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-md">
@@ -542,10 +564,10 @@ export default function Adan2AppPage() {
           gpsLoading={gpsLoading}
         />
 
-        {/* Unified 7-Section Navigation Bar */}
+        {/* Unified 9-Section Navigation Bar */}
         <nav
           aria-label={isAr ? 'أقسام التطبيق' : 'App sections'}
-          className="grid grid-cols-4 gap-1 rounded-2xl border border-border bg-card p-1.5 shadow-sm sm:grid-cols-7"
+          className="grid grid-cols-3 gap-1.5 rounded-2xl border border-border bg-card p-1.5 shadow-sm sm:grid-cols-5 lg:grid-cols-9"
         >
           {navTabs.map((tab) => {
             const Icon = tab.icon
@@ -586,6 +608,10 @@ export default function Adan2AppPage() {
         )}
 
         {activeTab === 'quran' && <QuranReader lang={lang} />}
+
+        {activeTab === 'unsur-nabiyak' && <UnsurNabiyakQuiz />}
+
+        {activeTab === 'tongue-guardian' && <TongueGuardian />}
 
         {activeTab === 'adhkar' && <AdhkarSection lang={lang} />}
 

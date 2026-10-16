@@ -121,3 +121,25 @@
   );
   background-size: 22px 22px;
 }
+
+.luxury-card {
+  @apply bg-card text-card-foreground border border-border shadow-sm;
+}
+
+@keyframes paypalSlowMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+.animate-paypal-marquee {
+  display: inline-flex;
+  animation: paypalSlowMarquee 36s linear infinite;
+}
+
+.animate-paypal-marquee:hover {
+  animation-play-state: paused;
+}
